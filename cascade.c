@@ -250,11 +250,13 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 	//breaks after returns not needed. [omitted on purpouse]
 	switch(tt) {
 		case stt_STR: switch(c) {
+			case -1 : return fnp_id; //EOF: just end, don't care abou tgrowing err
 			case '"': return with_flush(sf_str_end); //wo reset
 			case '\\':return with_id(sf_stresc_start);
 			default : return with_id(sf_strd_start);
 		} break;
 		case stt_STRD: switch(c) {
+			case -1 : //EOF: invalid string, but file STRD part...
 			case '"': 
 			case '\\':return fnp_str_flush_recur; //STRD ended, not whole string
 			default : return with_id(sf_strd_step);
@@ -298,7 +300,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 				? with_flush(sf_numUL)
 				: fnp_flush_recur;		//just unsigned integer
 				
-		case stt_CMNT: return c=='\n'
+		case stt_CMNT: return (c=='\n')||(c==-1) //end wth enter or EOF
 				? with_flush_reset(sf_id)
 				: fnp_id; //ignore
 		
@@ -322,7 +324,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 			case ' ':
 			case ',':
 			case '\t':
-			case '\n': return fnp_id; //just ignore, might be used in future...
+			case '\n':return fnp_id; //just ignore, might be used in future...
 			default : return triforce_find(tt, c); //no need to check for Opens
 		} break;
 		
