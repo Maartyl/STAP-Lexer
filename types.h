@@ -10,9 +10,11 @@
  
 //<Cascade token types>
 typedef enum eStreamTokenType{ //must have possible length
-	stt_NONE, stt_STR, stt_STRD, stt_STRESC, stt_MINUS, stt_ID, stt_SYMBOL, 
+	stt_NONE, stt_STR, stt_STRD, stt_STRESC,
+	stt_MINUS, stt_ID, stt_SYMBOL, 
 	stt_NUM, stt_NUMF, stt_NUMD, stt_NUMR, stt_NUMU,
-	stt_FN
+	stt_FN,
+	stt_CMNT
 } Stt;
 
 typedef enum ePublicTokenType{ //any type to be used int tokens themselves
@@ -39,6 +41,7 @@ typedef enum ePublicTokenType{ //any type to be used int tokens themselves
 	,ptt_OPEN = 6   //special starts (:, @, ...)
 	,ptt_ID = 1     //normal identifier
 	,ptt_SYMBOL = 2 //symbol identifier
+	,ptt_CMNT = 4	//comment
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 //combinable
 } Ptt;

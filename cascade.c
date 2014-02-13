@@ -44,6 +44,7 @@ FnPack with_id(StepFn sf){return (FnPack){sf, sf_id};}
 
 FnPack fnp_reset = {sf_reset, sf_id};
 FnPack fnp_flush_recur = {sf_flush_fnp, sf_id};
+//FnPack fnp_id = {sf_id, sf_id}; //already exists [in header]
 
 /// -- ACTUAL Fns ARE FROM NOW ON
 
@@ -212,6 +213,14 @@ void sf_fnl(State s) {
 }
 void sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
 
+///COMMENT [ ; ]
+void sf_cmnt_start(State s){//w id, uses universal end
+	st_setType(s, stt_CMNT);
+	st_crtToken(s, ptt_CMNT);
+}
+
+
+
 
 
 //</all fns>
@@ -220,7 +229,7 @@ FnPack triforce_find(Stt tt, UChar c){ //+num, symbol, id
 	if(is_num_first(c)) return with_id(sf_num_start); //NUM
 	if(is_symbol(c)) return with_id(sf_symbol_start);   //SYMBOL
 	if(is_id_first(c)) return with_id(sf_id_start); //ID
-	puts("triforce through"); ///minimize this
+	puts("triforce through"); ///minimize this [TODO solve unicode IDs here]
 	return fnp_id;
 }
 
@@ -251,7 +260,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 			default : return with_id(sf_strd_step);
 		} break;
 		case stt_STRESC: return c=='x'
-				? fnp_str_flush_recur //for now... [files empty ESC]
+				? fnp_str_err_recur //for now... [files empty ESC]
 				: (is_esc(c)
 					? with_flush(sf_stresc_one) //no reset: sets STR
 					: fnp_str_err_recur); //file error and retry as STR
@@ -288,6 +297,10 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 		case stt_NUMU: return c=='L'
 				? with_flush(sf_numUL)
 				: fnp_flush_recur;		//just unsigned integer
+				
+		case stt_CMNT: return c=='\n'
+				? with_flush_reset(sf_id)
+				: fnp_id; //ignore
 		
 		case stt_NONE: switch(c) { 
 			case '(': return with_flush_reset(sf_set_OP); 
@@ -299,8 +312,9 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 			case '"': return with_flush(sf_str_start); 
 			case '-': return with_id(sf_just_minus); 
 			case '\\':return with_id(sf_fnl);
+			case ';': return with_id(sf_cmnt_start);
 			case ':': 
-			case '\'': 
+			case '\'':
 			case '@':
 			case '_':
 			case '`': ///ALL OPENS HERE
