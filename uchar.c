@@ -25,7 +25,7 @@ UChar uc_read(FILE *stream){
 		///shift bits of appropriate byte of ho how much is left to end, and combine
 			//acc = ((0x1F&a)<<6)|(0x3F&b);
 		
-		///TODO: add checking [not -1, starts with b10...]
+		///TODO MAYBE: add checking [starts with b10]
 		
 		if((a&0xE0)==0xC0){ //match part of int
 		//2B
@@ -76,16 +76,16 @@ int uc_decompose(UChar c, void(*f)(int)){
 		(*f)(0x80|(0x3F&c));      //10 000000|00000000.00000000.00xxxxxx
 		return 3;
 	} else if (c<0x200000){//4B
-		(*f)(0xE0|(0x07&(c>>18)));//11110 000|000xxx00.00000000.00000000
+		(*f)(0xF0|(0x07&(c>>18)));//11110 000|000xxx00.00000000.00000000
 		(*f)(0x80|(0x3F&(c>>12)));//10 000000|000000xx.xxxx0000.00000000
 		(*f)(0x80|(0x3F&(c>>6))); //10 000000|00000000.0000xxxx.xx000000
 		(*f)(0x80|(0x3F&c));      //10 000000|00000000.00000000.00xxxxxx
 		return 4;
-	} else return 0; //too large number, invalid [negatives are valid invalids]
+	} else return 0; //too large number, invalid [negatives are valid 'invalids']
 }
 
 char *uc_toStr(UChar c){
-	int arr[4]; //to store yielded result, integer values are under 256
+	int arr[4]; //to store yielded result, int values are under 256
 	int i = 0;  //index to arr; becomes length (one after last)
 	void l(int a){arr[i++] = a;}
 	if (uc_decompose(c, l)) {
