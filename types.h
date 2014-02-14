@@ -36,12 +36,12 @@ typedef enum ePublicTokenType{ //any type to be used int tokens themselves
 	,ptt_NUMF = 211	 //[float, double]
 	,ptt_NUMD = 212
 	,ptt_NUMR = 221	 //[rational i.e.  5/8]
+	,ptt_CMNT = 400	//comment
 	,ptt_FNL = 51	//function lambda
 	,ptt_FNN = 52	//function named
 	,ptt_OPEN = 6   //special starts (:, @, ...)
 	,ptt_ID = 1     //normal identifier
 	,ptt_SYMBOL = 2 //symbol identifier
-	,ptt_CMNT = 4	//comment
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 //combinable
 } Ptt;

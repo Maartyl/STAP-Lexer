@@ -26,7 +26,7 @@ void st_tknaddc(State s, UChar c); //token payload: add c to buffer
 void st_crtBuffToken(State s, Ptt type);
 void st_putcrtBuffToken(State s, Ptt type); //auto-inits with curc
 void st_setPayload(State s, Buffer bf);
-void st_flushToken(State s);			//prints token (and "clears it"(not really))
+void st_flushToken(State s);			//prints token (and (leaves it, doesn't clear))
 
 UChar st_getChar(State s);
 Stt   st_getType(State s);
