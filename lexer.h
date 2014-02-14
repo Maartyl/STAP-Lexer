@@ -16,6 +16,9 @@ void flux_move(Flux* f, UChar c); //update flux; LF or ++
 
 Token create_token(Flux f, Ptt type);
 
+///closes buffer, letting \f use string
+void close_token(Token t, void (*f)(char*, size_t));
+
 void print_token(FILE* fout, Token t, Flux end_pos);
 
 void lex_all(FILE* fin, FILE* fout); //adds EOF

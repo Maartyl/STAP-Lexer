@@ -47,24 +47,6 @@ void st_putcrtBuffToken(State s, Ptt type){
 }
 
 
-
-
-
-	
-	
-	
-
-
-//LOL, delete?
-void st_tknClose(State s, void (*f)(char*, size_t)){
-	Token t = s->t;
-	size_t payload_len = 0; 
-	char* str = t.payload == NULL ? "" : strbuff_close(t.payload, &payload_len);
-	(*f)(str, payload_len);
-	if (payload_len != 0) free(str);
-}
-
-
 int st_matchChar(State s, char *str)  {return NULL != strchr(str, s->curc);}
 int st_cmpChar(State s, char c)  {return c == s->curc;}
 
