@@ -294,10 +294,10 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 		case stt_NUMF: return is_num(c)
 				? with_id(sf_num_step)		//just append c
 				: (c=='D'
-					? with_flush(sf_numD)	//is double
+					? with_flush_reset(sf_numD)	//is double
 					: fnp_flush_recur); 	
 		case stt_NUMU: return c=='L'
-				? with_flush(sf_numUL)
+				? with_flush_reset(sf_numUL)
 				: fnp_flush_recur;		//just unsigned integer
 				
 		case stt_CMNT: return (c=='\n')||(c==-1) //end wth enter or EOF

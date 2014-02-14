@@ -33,7 +33,7 @@ typedef enum ePublicTokenType{ //any type to be used int tokens themselves
 	,ptt_NUMB = 205	 //unsigned [byte, uint, ulong]
 	,ptt_NUMUI = 206 //can have (-) TODO: ERR / IGNORE
 	,ptt_NUMUL = 207
-	,ptt_NUMF = 211	 //[float, double]
+	,ptt_NUMF = 211	 //[float, double] //1. == 1.0 , 5.8D ...
 	,ptt_NUMD = 212
 	,ptt_NUMR = 221	 //[rational i.e.  5/8]
 	,ptt_CMNT = 400	//comment

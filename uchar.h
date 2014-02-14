@@ -4,7 +4,11 @@
 #include <stdlib.h>
  
 /**
- * unicode character, representation and transformation operations
+ * unicode character [UTF-8]
+ * 
+ * , representation and transformation operations
+ * simple support, just transforms bytes to numberes and vice versa
+ * DEAD chars are considered normal valid chars too
  */
 
 typedef int UChar;  ///representation as int
