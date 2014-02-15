@@ -18,9 +18,9 @@ static int inline is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //white
 
 void inline  sf_id(State s){/*pass*/} //not static
 static void sf_reset(State s){ //no longer continues
-	char* str = uc_toStr(st_getChar(s));
+	DEBUG(char* str = uc_toStr(st_getChar(s));
 	printf("sf_reset(%d, %s)\n", st_getType(s), str[0] == '\n' ? "ENTER" : str);
-	if (strlen(str)) free(str);
+	if (strlen(str)) free(str);)//DEBUG
 	
 	st_setType(s, stt_NONE);
 }
@@ -33,7 +33,7 @@ static void sf_flush_reset(State s){
 ///fall through
 static void sf_flush_recur(State s)  {
 	///MUST NOT BE CALLED FROM stt_NONE branch! [infinite loop]
-	puts("RECUR");
+	DEBUG(puts("RECUR");)
 	sf_flush_reset(s); //is done, flushes; searches with NONE
 	st_updateFnp(s); //recursive (not really, but in a sense)
 	st_Fn(s); 	//call now, for it would skip a char otherwise
@@ -67,9 +67,9 @@ static void sf_str_end(State s){ //on _"_ encounter in stt_STR (not stt_STRESC) 
 }
 //--str helpers
 static void sf_str_reset(State s){ //no longer continues
-	char* str = uc_toStr(st_getChar(s));
+	DEBUG(char* str = uc_toStr(st_getChar(s));
 	printf("sf_str_reset(%d, %s)\n", st_getType(s), str);
-	if (strlen(str)) free(str);
+	if (strlen(str)) free(str);)//DEBUG
 	
 	st_setType(s, stt_STR);
 }
@@ -80,7 +80,7 @@ static void sf_str_flush_reset(State s){
 static void sf_str_flush_recur(State s){ //no flush
 	///MUST NOT BE CALLED FROM stt_STR branch! [infinite loop]
 	///just like sf_flush_recur[recur], but returns to STR
-	puts("RECUR STR");
+	DEBUG(puts("RECUR STR");)
 	sf_str_flush_reset(s); //is done, flushes; searches with STR
 	st_updateFnp(s); //recursive (not really, but in a sense)
 	st_Fn(s); 	//call now, for it would skip a char otherwise
@@ -88,7 +88,7 @@ static void sf_str_flush_recur(State s){ //no flush
 }
 static void sf_str_err_recur(State s){ //no flush
 	///just add error and recur normaly
-	puts("ESC ERR");
+	DEBUG(puts("ESC ERR");)
 	st_setTokenErr(s);
 	sf_str_flush_recur(s);
 }
@@ -153,14 +153,14 @@ static void sf_symbol_start(State s){//step_flush: if len=1
 	st_putcrtBuffToken(s, ptt_SYMBOL);
 }
 static void sf_minus_symbol_start(State s){//no flush
-	puts("sf_minus_symbol_start");
+	DEBUG(puts("sf_minus_symbol_start");)
 	st_setType(s, stt_SYMBOL);
 	st_crtBuffToken(s, ptt_SYMBOL);
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
 static void sf_minus_symbol_only(State s){//no flush
-	puts("sf_minus_symbol_only");
+	DEBUG(puts("sf_minus_symbol_only");)
 	st_crtBuffToken(s, ptt_SYMBOL);
 	st_tknaddc(s, '-');
 	sf_flush_recur(s); //recur: actually apply curc, is not part of symbol
@@ -208,23 +208,21 @@ static FnPack triforce_find(Stt tt, UChar c){ //+num, symbol, id
 	if(is_num_first(c)) return with_id(sf_num_start); //NUM
 	if(is_symbol(c)) return with_id(sf_symbol_start);   //SYMBOL
 	if(is_id_first(c)) return with_id(sf_id_start); //ID
-	puts("triforce through"); ///minimize this [TODO solve unicode IDs here]
+	DEBUG(puts("triforce through");) ///minimize this [TODO solve unicode IDs here]
 	return fnp_id;
 }
 
 static FnPack minus_find(Stt tt, UChar c){ //-num, symbol
-	puts("minus find NUM");
 	if(is_num_first(c)) return with_id(sf_minus_num_start); //NUM
-	puts("minus find SYMBOL");
 	if(is_symbol(c)) return with_id(sf_minus_symbol_start); //SYMBOL (starts with -)
 	return with_id(sf_minus_symbol_only); //SYBMOL: just -
 }
  
 FnPack fnp_find(Stt tt, UChar c){			///main enetery
 
-	char* str = uc_toStr(c);
+	DEBUG(char* str = uc_toStr(c);
 	printf("fnp_find(%d, %s)\n", tt, str[0] == '\n' ? "ENTER" : str); //DEBUG
-	if (strlen(str)) free(str);
+	if (strlen(str)) free(str);)//DEBUG
 	
 	//breaks after returns not needed. [omitted on purpouse]
 	switch(tt) {

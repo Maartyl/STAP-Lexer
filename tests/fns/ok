@@ -1,0 +1,7 @@
+\a {a ++} ;simple lambda
+{_ ++}    ;simplified
+
+\\f a b {a b +} ;f is add function
+   \a b {a b +} ;same fn just anonymous
+   
+{_0 _0 _1 fn_takes_3_args _2 f_takes_two} ;they don't have to...

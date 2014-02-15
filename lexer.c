@@ -27,9 +27,10 @@ void close_token(Token t, void (*f)(char*, size_t)){
 void print_token(FILE* fout, Token t, Flux end_pos){
 	void inline l(char* str, size_t len){
 		register Flux fl = t.flux; //fast access, no pointing to it
-		if (fout == stdout) printf("\t\t\t"); //\t\t\t, \n just for debug
-		fprintf(fout, "%d,%d,%d,%d,%d|%s%c\n", 
+		DEBUG(if (fout == stdout) printf("\t\t\t");) //\t\t\t, \n just for debug
+		fprintf(fout, "%d,%d,%d,%d,%d|%s%c", 
 			fl.pos, end_pos.pos-fl.pos, fl.row, fl.col, t.type, str, SEPAR);
+		DEBUG(fprintf(fout, "\n");)
 	}
 	close_token(t, l);
 }
@@ -46,7 +47,7 @@ void lex_all(FILE* fin, FILE* fout) {
 void lex(State s){
 	if (st_firstChar(s) == EOF) return; //maybe stupid: flux problem fix
 	if (!st_cmpChar(s, SEPAR)){
-		printf("loop \\ %c\n", st_getChar(s)); //debug
+		DEBUG(printf("loop \\ %c\n", st_getChar(s));) //debug
 		st_updateFnp(s);
 		st_Fn(s);
 	}

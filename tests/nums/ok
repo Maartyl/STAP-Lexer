@@ -1,0 +1,19 @@
+1  547  -8  0  123456789123456789123456789
+
+1.0 2.7 0.78 3.789456123 123458.224 0.0
+
+1.8D 0.8D 0.564879D 0.0D
+
+1L 456L   5U  0U 0L   5UL 0UL
+
+1/8 12/78 0/789 
+
+-8U, 1/0 ;invalid as value, but valid as token
+
+18. ;is interpreted as float, change maybe? - should be fine...
+
+---
+
+5E 8+ +8 8+8 +8+
+:1 @1 #1 _1 `1 '1
+

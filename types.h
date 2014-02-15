@@ -90,6 +90,8 @@ typedef struct sState { //not necessarily consistent!
 
 //<Consts>
 #define SEPAR 30 /*RS*/
+
+#define DEBUG(CMND) CMND //comment to comment all debug...
 //</Consts>
 
 #endif
