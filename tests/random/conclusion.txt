@@ -1,0 +1,13 @@
+program didn't fail on random data, just printed nosense 
+and sometimes even static text was displayed wrong
+
+but:
+
+after about 12 milion chars processed about 30MB of memory was used
+which was slowly, yet steadily growing
+
+which would suggest a memory leak
+
+though with normal length input shouldn't even be noticable
+ - for complexity of solving this bug ad very little gain:
+ - very small priority
