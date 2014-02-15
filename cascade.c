@@ -312,7 +312,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 		} break;
 		
 		
-		default: return fnp_flush_recur; //error, try to repair...
+		default: return fnp_flush_recur; //error, try to fix... //shouldn't ever happen
 	}
 }
 

@@ -9,7 +9,7 @@
 
  
 //<Cascade token types>
-typedef enum eStreamTokenType{ //must have possible length
+typedef enum eStreamTokenType{ //stream states
 	stt_NONE, stt_STR, stt_STRD, stt_STRESC,
 	stt_MINUS, stt_ID, stt_SYMBOL, stt_OPEN,
 	stt_NUM, stt_NUMF, stt_NUMD, stt_NUMR, stt_NUMU,
@@ -17,7 +17,7 @@ typedef enum eStreamTokenType{ //must have possible length
 	stt_CMNT
 } Stt;
 
-typedef enum ePublicTokenType{ //any type to be used int tokens themselves
+typedef enum ePublicTokenType{ //any type to be used in tokens themselves
 	 ptt_OP = 111 // ( //Parenthses
 	,ptt_CP = 112 // )
 	,ptt_OB = 121 // [ //Brackets
@@ -45,8 +45,6 @@ typedef enum ePublicTokenType{ //any type to be used int tokens themselves
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 //combinable
 } Ptt;
-//add ptt_START for start of file: #/bash...
-
 
 
 //</Cascade token types>
