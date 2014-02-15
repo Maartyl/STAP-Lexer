@@ -27,7 +27,8 @@ void close_token(Token t, void (*f)(char*, size_t)){
 void print_token(FILE* fout, Token t, Flux end_pos){
 	void l(char* str, size_t len){
 		Flux fl = t.flux;
-		fprintf(fout, "\t\t%d,%d,%d,%d,%d|%s%c\n", //\t\t, \n just for debug
+		if (fout == stdout) printf("\t\t\t"); //\t\t, \n just for debug
+		fprintf(fout, "%d,%d,%d,%d,%d|%s%c\n", 
 			fl.pos, end_pos.pos-fl.pos, fl.row, fl.col, t.type, str, SEPAR);
 	}
 	close_token(t, l);
@@ -64,6 +65,7 @@ void lex(State s){
 	st_Fn(s);
 	st_Fn2(s);
 }
+
 
 
 

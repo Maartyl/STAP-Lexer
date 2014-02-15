@@ -1,20 +1,20 @@
 #!/usr/local/bin/stap; doesn't work yet
-id;
-id45;
-1.5 1. 45.123456789;
-1/2 0/1 1/0 3/5/7 ;
+id
+id45
+1.5 1. 45.123456789
+1/2 0/1 1/0 3/5/7 
 1/2/3/4/5/6/7/8/9;  test rationals
 1.2.3.4.5.6.7.8.9;  test floats
-1L 1U 1UL 1.D;
-"str";
-#(lol) asd;
-:[{i(1,2),5}..];
-:[ a b f #(1 2 a 3) collect * rand %.. expand];
-"str\ning";
-("i"+"");
-"es\c\ape";
-"es\\ca";
-+ *-+ 5;
+1L 1U 1UL 1.D
+"str"
+#(lol) asd
+:[{i(1,2),5}..]
+:[ a b f #(1 2 a 3) collect * rand %.. expand]
+"str\ning"
+("i"+"")
+"es\c\ape"
+"es\\ca"
++ *-+ 5
 :\a (5 ++) b ":c" f_lol {a 1 b 2 b a b};cryptographic transformation
 
 

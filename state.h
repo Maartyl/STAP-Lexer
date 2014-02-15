@@ -34,8 +34,12 @@ Stt   st_getType(State s);
 int st_matchChar(State s, char *str); //curc in str ?
 int st_cmpChar(State s, char c); 	//curc == c ?
 
-
+/**
+ * @fin stream from which to read source code characters
+ * @fout stram to which print tokens
+ * @returns pointer to instance of sState structure
+ */
 State State_new(FILE* fin, FILE* fout);
-void st_finalize(State s); //calls free
+void st_finalize(State s); //free sState structure [and resources]
 
 #endif

@@ -26,13 +26,19 @@
  * on 'U' -> NUM_UNS(L*)				->|		NUMUI
  * 				on 'L' -> NUM_UNSLONG()s	->|	NUMUL
  * */
+ 
+ /* STR:
+  * 
+  * "row\nabc" ->
+  * <str start><str data: row><str esc: n><str data: abc><str end>
+  * */
 
 
 FnPack fnp_find(Stt tt, UChar c); //main search point (to be used from outside)
 
 //cascade functions: accessed through FnPack ptrs
-void sf_id(State s); //does nothing
-//other fns only accessible inside...
+void sf_id(State s); //does nothing //idea of identity function
+//other fns only accessible inside this 'module' [file]...
 
 static const FnPack fnp_id = {sf_id, sf_id}; //start point, null
 
