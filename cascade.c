@@ -16,7 +16,7 @@ static int inline is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //white
 
 //<all fns [StepFn+helperes+combiners]>
 
-void inline sf_id(State s){/*pass*/} //not static
+void inline  sf_id(State s){/*pass*/} //not static
 static void sf_reset(State s){ //no longer continues
 	char* str = uc_toStr(st_getChar(s));
 	printf("sf_reset(%d, %s)\n", st_getType(s), str[0] == '\n' ? "ENTER" : str);

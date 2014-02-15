@@ -19,6 +19,7 @@ int main (int argc, char *argv[]) {
 	if (opterr != 0) return opterr; //exit
 	//</args>
 	
+	
 	lex_all(fin, fout);
 
 	fprintf(fout, "\n");
