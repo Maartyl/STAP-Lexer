@@ -9,7 +9,7 @@
  * dispatch  (only 1 outer fn)
  *  - fnp_find
  * 
- * all fns
+ * all fns static: private to file
  * 
  * */
  

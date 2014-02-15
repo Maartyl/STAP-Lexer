@@ -1,37 +1,37 @@
 #include "cascade.h"
 
 //<helpers> //update for Unicode ?
-int is_any_of(UChar c, char* pattern){return (strchr(pattern, c) != NULL);}
-int is_num(UChar c){return c>='0' && c<='9';}
-int is_num_first(UChar c){return is_num(c);}//_-_ is elsewhere [1st class problem]
-int is_id(UChar c){return 
+static int is_any_of(UChar c, char* pattern){return (strchr(pattern, c) != NULL);}
+static int is_num(UChar c){return c>='0' && c<='9';}
+static int is_num_first(UChar c){return is_num(c);}//_-_ is elsewhere [1st class problem]
+static int is_id(UChar c){return 
 	(c>='0' && c<='9') || (c>='a' && c<='z') || 
 	(c>='A' && c<='Z') || is_any_of(c, "_$");}
-int is_id_first(UChar c){return 
+static int is_id_first(UChar c){return 
 	(c>='a' && c<='z') || (c>='A' && c<='Z') || is_any_of(c, "_$");}
-int is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
-int is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
-int is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
+static int is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
+static int is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
+static int is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
 //</helpers>
 
 //<all fns [StepFn+helperes+combiners]>
 
-void sf_id(State s){/*pass*/}
-void sf_reset(State s){ //no longer continues
+void sf_id(State s){/*pass*/} //not static
+static void sf_reset(State s){ //no longer continues
 	char* str = uc_toStr(st_getChar(s));
 	printf("sf_reset(%d, %s)\n", st_getType(s), str[0] == '\n' ? "ENTER" : str);
 	if (strlen(str)) free(str);
 	
 	st_setType(s, stt_NONE);
 }
-void sf_flush(State s){st_flushToken(s);}
-void sf_flush_reset(State s){
+static void sf_flush(State s){st_flushToken(s);}
+static void sf_flush_reset(State s){
 	sf_flush(s);
 	sf_reset(s); //flush also resets: token is done and has no consequence.
 }
 
 ///fall through
-void sf_flush_recur(State s)  {
+static void sf_flush_recur(State s)  {
 	///MUST NOT BE CALLED FROM stt_NONE branch! [infinite loop]
 	puts("RECUR");
 	sf_flush_reset(s); //is done, flushes; searches with NONE
@@ -40,9 +40,9 @@ void sf_flush_recur(State s)  {
 				//for this Fn is called instead
 }
 
-FnPack with_flush(StepFn sf){return (FnPack){sf, sf_flush};}
-FnPack with_flush_reset(StepFn sf){return (FnPack){sf, sf_flush_reset};}
-FnPack with_id(StepFn sf){return (FnPack){sf, sf_id};}
+static FnPack with_flush(StepFn sf){return (FnPack){sf, sf_flush};}
+static FnPack with_flush_reset(StepFn sf){return (FnPack){sf, sf_flush_reset};}
+static FnPack with_id(StepFn sf){return (FnPack){sf, sf_id};}
 
 FnPack fnp_reset = {sf_reset, sf_id};
 FnPack fnp_flush_recur = {sf_flush_recur, sf_id};
@@ -51,33 +51,33 @@ FnPack fnp_flush_recur = {sf_flush_recur, sf_id};
 /// -- ACTUAL Fns ARE FROM NOW ON
 
  
-#define F_SET_TOKEN(TKN) void sf_set_##TKN(State s){st_crtToken(s, ptt_##TKN);}
+#define F_SET_TOKEN(TKN) static void sf_set_##TKN(State s){st_crtToken(s, ptt_##TKN);}
 ///[](){}
 F_SET_TOKEN(OP) F_SET_TOKEN(OB) F_SET_TOKEN(OC) //with_flush_reset
 F_SET_TOKEN(CP) F_SET_TOKEN(CB) F_SET_TOKEN(CC)
 
 ///STR (start, end)
-void sf_str_start(State s){ //on " encounter //w flush
+static void sf_str_start(State s){ //on " encounter //w flush
 	st_setType(s, stt_STR); 
 	st_crtToken(s, ptt_STRO);
 }
-void sf_str_end(State s){ //on _"_ encounter in stt_STR (not stt_STRESC) //w flush
+static void sf_str_end(State s){ //on _"_ encounter in stt_STR (not stt_STRESC) //w flush
 	st_setType(s, stt_NONE); 
 	st_crtToken(s, ptt_STRC);
 }
 //--str helpers
-void sf_str_reset(State s){ //no longer continues
+static void sf_str_reset(State s){ //no longer continues
 	char* str = uc_toStr(st_getChar(s));
 	printf("sf_str_reset(%d, %s)\n", st_getType(s), str);
 	if (strlen(str)) free(str);
 	
 	st_setType(s, stt_STR);
 }
-void sf_str_flush_reset(State s){
+static void sf_str_flush_reset(State s){
 	sf_flush(s);
 	sf_str_reset(s);
 }
-void sf_str_flush_recur(State s){ //no flush
+static void sf_str_flush_recur(State s){ //no flush
 	///MUST NOT BE CALLED FROM stt_STR branch! [infinite loop]
 	///just like sf_flush_recur[recur], but returns to STR
 	puts("RECUR STR");
@@ -86,7 +86,7 @@ void sf_str_flush_recur(State s){ //no flush
 	st_Fn(s); 	//call now, for it would skip a char otherwise
 				//for this Fn is called instead
 }
-void sf_str_err_recur(State s){ //no flush
+static void sf_str_err_recur(State s){ //no flush
 	///just add error and recur normaly
 	puts("ESC ERR");
 	st_setTokenErr(s);
@@ -95,106 +95,105 @@ void sf_str_err_recur(State s){ //no flush
 FnPack fnp_str_err_recur = {sf_str_err_recur, sf_id};
 FnPack fnp_str_flush_recur = {sf_str_flush_recur, sf_id};
 ///STRD __ 
-void sf_strd_start(State s){//no flush 
+static void sf_strd_start(State s){//no flush 
 	st_setType(s, stt_STRD);
 	st_putcrtBuffToken(s, ptt_STRD);
 }
-void sf_strd_step(State s){st_tknputc(s);}//no flush
+static void sf_strd_step(State s){st_tknputc(s);}//no flush
 
 ///STRESC __ 
-void sf_stresc_start(State s){//no flush
+static void sf_stresc_start(State s){//no flush
 	st_setType(s, stt_STRESC);
 	st_crtBuffToken(s, ptt_STRESC); //empty, just data later
 }
-void sf_stresc_one(State s){//w flush, no reset
+static void sf_stresc_one(State s){//w flush, no reset
 	st_setType(s, stt_STR);
 	st_tknputc(s);
 }
-void sf_stresc_step(State s){st_tknputc(s);}//no flush
-void sf_just_minus(State s){st_setType(s, stt_MINUS);}//no flush
+static void sf_just_minus(State s){st_setType(s, stt_MINUS);}//no flush
 
 ///NUM
 
-void sf_num_start(State s){//no flush
+static void sf_num_start(State s){//no flush
 	st_setType(s, stt_NUM);
 	st_putcrtBuffToken(s, ptt_NUMI);
 }
-void sf_minus_num_start(State s){//no flush
+static void sf_minus_num_start(State s){//no flush
 	st_setType(s, stt_NUM);
 	st_crtBuffToken(s, ptt_NUMI);
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
-void sf_num_step(State s){st_tknputc(s);}//no flush
+static void sf_num_step(State s){st_tknputc(s);}//no flush
 //--
-void sf_numD(State s){st_setTokenType(s, ptt_NUMD);}  //w flush reset
-void sf_numB(State s){st_setTokenType(s, ptt_NUMB);}  //w flush reset
-void sf_numL(State s){st_setTokenType(s, ptt_NUML);}  //w flush reset
-void sf_numUL(State s){st_setTokenType(s, ptt_NUMUL);}//w flush reset
+static void sf_numD(State s){st_setTokenType(s, ptt_NUMD);}  //w flush reset
+static void sf_numB(State s){st_setTokenType(s, ptt_NUMB);}  //w flush reset
+static void sf_numL(State s){st_setTokenType(s, ptt_NUML);}  //w flush reset
+static void sf_numUL(State s){st_setTokenType(s, ptt_NUMUL);}//w flush reset
 //--
-void sf_numR(State s){//w id
+static void sf_numR(State s){//w id
 	st_setType(s, stt_NUMR);
 	st_setTokenType(s, ptt_NUMR);
 	sf_num_step(s); //or other, global delimiter for multiple args tokens
 }
-void sf_numF(State s){//w id
+static void sf_numF(State s){//w id
 	st_setType(s, stt_NUMF);
 	st_setTokenType(s, ptt_NUMF);
 	sf_num_step(s); //or other, global delimiter for multiple args tokens
 }
 //--
-void sf_numU(State s){//w id
+static void sf_numU(State s){//w id
 	st_setType(s, stt_NUMU);
 	st_setTokenType(s, ptt_NUMUI);
 }
 
 ///SYMBOL
-void sf_symbol_start(State s){//step_flush: if len=1
+static void sf_symbol_start(State s){//step_flush: if len=1
 	st_setType(s, stt_SYMBOL);
 	st_putcrtBuffToken(s, ptt_SYMBOL);
 }
-void sf_minus_symbol_start(State s){//no flush
+static void sf_minus_symbol_start(State s){//no flush
 	puts("sf_minus_symbol_start");
 	st_setType(s, stt_SYMBOL);
 	st_crtBuffToken(s, ptt_SYMBOL);
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
-void sf_minus_symbol_only(State s){//no flush
+static void sf_minus_symbol_only(State s){//no flush
 	puts("sf_minus_symbol_only");
 	st_crtBuffToken(s, ptt_SYMBOL);
 	st_tknaddc(s, '-');
 	sf_flush_recur(s); //recur: actually apply curc, is not part of symbol
 }
-void sf_symbol_step(State s)  {st_tknputc(s);}//no flush
+static void sf_symbol_step(State s)  {st_tknputc(s);}//no flush
 
 ///ID  identifiers
-void sf_id_start(State s){//no flush
+static void sf_id_start(State s){//no flush
 	st_setType(s, stt_ID);
 	st_putcrtBuffToken(s, ptt_ID);
 }
-void sf_id_step(State s)  {st_tknputc(s);}//no flush
+static void sf_id_step(State s)  {st_tknputc(s);}//no flush
 
 ///OPEN [opener characteres like : # ...]
-void sf_open(State s){//w id, then flush recur
+static void sf_open(State s){//w id, then flush recur
 	st_setType(s, stt_OPEN);
 	st_putcrtBuffToken(s, ptt_OPEN);
 } 
 //could become symbol... [whitespace etc. after it]
-void sf_open_symbol(State s){//instead of flush recur of [sf_open]
+static void sf_open_symbol(State s){//instead of flush recur of [sf_open]
 	st_setTokenType(s, ptt_SYMBOL);
 	sf_flush_recur(s); //call flush recur
 } 
 
 ///FUNCTION "\", "\\"
-void sf_fnl(State s) {
+static void sf_fnl(State s) {
 	st_setType(s, stt_FN);
 	st_crtToken(s, ptt_FNL);
 }
-void sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
+static void sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
 
 ///COMMENT [ ; ]
-void sf_cmnt_start(State s){//w id, uses universal end
+static void sf_cmnt_start(State s){//w id, uses universal end
 	st_setType(s, stt_CMNT);
 	st_crtToken(s, ptt_CMNT);
 }
@@ -205,7 +204,7 @@ void sf_cmnt_start(State s){//w id, uses universal end
 
 //</all fns>
 
-FnPack triforce_find(Stt tt, UChar c){ //+num, symbol, id
+static FnPack triforce_find(Stt tt, UChar c){ //+num, symbol, id
 	if(is_num_first(c)) return with_id(sf_num_start); //NUM
 	if(is_symbol(c)) return with_id(sf_symbol_start);   //SYMBOL
 	if(is_id_first(c)) return with_id(sf_id_start); //ID
@@ -213,7 +212,7 @@ FnPack triforce_find(Stt tt, UChar c){ //+num, symbol, id
 	return fnp_id;
 }
 
-FnPack minus_find(Stt tt, UChar c){ //-num, symbol
+static FnPack minus_find(Stt tt, UChar c){ //-num, symbol
 	puts("minus find NUM");
 	if(is_num_first(c)) return with_id(sf_minus_num_start); //NUM
 	puts("minus find SYMBOL");
