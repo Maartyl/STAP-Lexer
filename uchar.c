@@ -25,7 +25,7 @@ UChar uc_read(FILE *stream){
 		///shift bits of appropriate byte of ho how much is left to end, and combine
 			//acc = ((0x1F&a)<<6)|(0x3F&b);
 		
-		///TODO MAYBE: add checking [starts with b10]
+		///TODO MAYBE: add checking [EOF (not first), starts with b10]
 		
 		if((a&0xE0)==0xC0){ //match part of int
 		//2B

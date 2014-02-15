@@ -32,7 +32,7 @@ FnPack fnp_find(Stt tt, UChar c); //main search point (to be used from outside)
 
 //cascade functions: accessed through FnPack ptrs
 void sf_id(State s); //does nothing
-//other fns just inside...
+//other fns only accessible inside...
 
 static const FnPack fnp_id = {sf_id, sf_id}; //start point, null
 
