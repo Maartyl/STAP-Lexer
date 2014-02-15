@@ -3,20 +3,20 @@
 //<helpers> //update for Unicode ?
 static int is_any_of(UChar c, char* pattern){return (strchr(pattern, c) != NULL);}
 static int is_num(UChar c){return c>='0' && c<='9';}
-static int is_num_first(UChar c){return is_num(c);}//_-_ is elsewhere [1st class problem]
+static int inline is_num_first(UChar c){return is_num(c);}//_-_ is elsewhere [1st class problem]
 static int is_id(UChar c){return 
 	(c>='0' && c<='9') || (c>='a' && c<='z') || 
 	(c>='A' && c<='Z') || is_any_of(c, "_$");}
 static int is_id_first(UChar c){return 
 	(c>='a' && c<='z') || (c>='A' && c<='Z') || is_any_of(c, "_$");}
-static int is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
-static int is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
-static int is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
+static int inline is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
+static int inline is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
+static int inline is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
 //</helpers>
 
 //<all fns [StepFn+helperes+combiners]>
 
-void sf_id(State s){/*pass*/} //not static
+void inline sf_id(State s){/*pass*/} //not static
 static void sf_reset(State s){ //no longer continues
 	char* str = uc_toStr(st_getChar(s));
 	printf("sf_reset(%d, %s)\n", st_getType(s), str[0] == '\n' ? "ENTER" : str);
@@ -24,7 +24,7 @@ static void sf_reset(State s){ //no longer continues
 	
 	st_setType(s, stt_NONE);
 }
-static void sf_flush(State s){st_flushToken(s);}
+static void inline sf_flush(State s){st_flushToken(s);}
 static void sf_flush_reset(State s){
 	sf_flush(s);
 	sf_reset(s); //flush also resets: token is done and has no consequence.
@@ -40,9 +40,9 @@ static void sf_flush_recur(State s)  {
 				//for this Fn is called instead
 }
 
-static FnPack with_flush(StepFn sf){return (FnPack){sf, sf_flush};}
-static FnPack with_flush_reset(StepFn sf){return (FnPack){sf, sf_flush_reset};}
-static FnPack with_id(StepFn sf){return (FnPack){sf, sf_id};}
+static FnPack inline with_flush(StepFn sf){return (FnPack){sf, sf_flush};}
+static FnPack inline with_flush_reset(StepFn sf){return (FnPack){sf, sf_flush_reset};}
+static FnPack inline with_id(StepFn sf){return (FnPack){sf, sf_id};}
 
 FnPack fnp_reset = {sf_reset, sf_id};
 FnPack fnp_flush_recur = {sf_flush_recur, sf_id};
@@ -51,7 +51,7 @@ FnPack fnp_flush_recur = {sf_flush_recur, sf_id};
 /// -- ACTUAL Fns ARE FROM NOW ON
 
  
-#define F_SET_TOKEN(TKN) static void sf_set_##TKN(State s){st_crtToken(s, ptt_##TKN);}
+#define F_SET_TOKEN(TKN) static void inline sf_set_##TKN(State s){st_crtToken(s, ptt_##TKN);}
 ///[](){}
 F_SET_TOKEN(OP) F_SET_TOKEN(OB) F_SET_TOKEN(OC) //with_flush_reset
 F_SET_TOKEN(CP) F_SET_TOKEN(CB) F_SET_TOKEN(CC)
@@ -99,7 +99,7 @@ static void sf_strd_start(State s){//no flush
 	st_setType(s, stt_STRD);
 	st_putcrtBuffToken(s, ptt_STRD);
 }
-static void sf_strd_step(State s){st_tknputc(s);}//no flush
+static void inline sf_strd_step(State s){st_tknputc(s);}//no flush
 
 ///STRESC __ 
 static void sf_stresc_start(State s){//no flush
@@ -110,7 +110,7 @@ static void sf_stresc_one(State s){//w flush, no reset
 	st_setType(s, stt_STR);
 	st_tknputc(s);
 }
-static void sf_just_minus(State s){st_setType(s, stt_MINUS);}//no flush
+static void inline sf_just_minus(State s){st_setType(s, stt_MINUS);}//no flush
 
 ///NUM
 
@@ -165,14 +165,14 @@ static void sf_minus_symbol_only(State s){//no flush
 	st_tknaddc(s, '-');
 	sf_flush_recur(s); //recur: actually apply curc, is not part of symbol
 }
-static void sf_symbol_step(State s)  {st_tknputc(s);}//no flush
+static void inline sf_symbol_step(State s)  {st_tknputc(s);}//no flush
 
 ///ID  identifiers
 static void sf_id_start(State s){//no flush
 	st_setType(s, stt_ID);
 	st_putcrtBuffToken(s, ptt_ID);
 }
-static void sf_id_step(State s)  {st_tknputc(s);}//no flush
+static void inline sf_id_step(State s)  {st_tknputc(s);}//no flush
 
 ///OPEN [opener characteres like : # ...]
 static void sf_open(State s){//w id, then flush recur
@@ -190,7 +190,7 @@ static void sf_fnl(State s) {
 	st_setType(s, stt_FN);
 	st_crtToken(s, ptt_FNL);
 }
-static void sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
+static void inline sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
 
 ///COMMENT [ ; ]
 static void sf_cmnt_start(State s){//w id, uses universal end

@@ -2,7 +2,7 @@
 
 
 UChar uc_read(FILE *stream){
-	int nc(){return fgetc(stream);} //next char
+	int inline nc(){return fgetc(stream);} //next char
 	
 	/*	00000000 -- 0000007F: 	0xxxxxxx
 		00000080 -- 000007FF: 	110xxxxx 10xxxxxx
@@ -57,7 +57,7 @@ UChar uc_read(FILE *stream){
 
 
 int uc_write(UChar c, FILE *stream){
-	void l(int a){fputc(a, stream);}
+	void inline l(int a){fputc(a, stream);}
 	return uc_decompose(c, l);
 }
 
@@ -89,8 +89,8 @@ char *uc_toStr(UChar c){
 	int i = 0;  //index to arr; becomes length (one after last)
 	void l(int a){arr[i++] = a;}
 	if (uc_decompose(c, l)) {
-		char* p = malloc(sizeof(char)*(i+1)); //+1: i==len + null
-		for (int j=0; j<i; j++) {//for all valid chars in arr
+		register char* p = malloc(sizeof(char)*(i+1)); //+1: i==len + null
+		for (register int j=0; j<i; j++) {//for all valid chars in arr
 			p[j] = (char) arr[j];
 		}
 		p[i] = '\0'; //null terminated
