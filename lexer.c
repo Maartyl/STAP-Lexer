@@ -52,14 +52,13 @@ void lex(State s){
 	//TODO solve shebang #! ... //as Stt
 	while (st_nextChar(s) != EOF) {	//__ main loop __
 		st_Fn2(s); 
-		/*old debug*/ //char* str = uc_toStr(st_getChar(s)); printf("loop \\ %s\n", str[0] == '\n' ? "ENTER" : str);if (strlen(str)) free(str);//debug
 		st_updateFnp(s);
 		st_Fn(s);
 	}
 	st_Fn2(s); //didn't enter anymore
 	
 	//to ensure that all will finalize
-	if (st_getType(s) == stt_NONE) return; //has no state, nothing to finish...
+	if (st_getType(s) == stt_NONE) return; //NONE has no state, nothing to finish...
 	st_setChar(s, -1); //EOF, can't match anything new
 	st_updateFnp(s); 
 	st_Fn(s);

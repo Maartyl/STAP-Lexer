@@ -12,7 +12,7 @@
 ///+Token
 ///+Lex fns. itself
  
-void flux_move(Flux* f, UChar c); //update flux; LF or ++
+void flux_move(Flux* f, UChar c); //update flux; LF ignore, otherwise ++
 
 Token create_token(Flux f, Ptt type);
 

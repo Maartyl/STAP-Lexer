@@ -1,15 +1,17 @@
 #include "cascade.h"
 
 //<helpers> //update for Unicode ?
+int is_any_of(UChar c, char* pattern){return (strchr(pattern, c) != NULL);}
 int is_num(UChar c){return c>='0' && c<='9';}
 int is_num_first(UChar c){return is_num(c);}//_-_ is elsewhere [1st class problem]
 int is_id(UChar c){return 
 	(c>='0' && c<='9') || (c>='a' && c<='z') || 
-	(c>='A' && c<='Z') || (strchr("_$", c) != NULL);}
+	(c>='A' && c<='Z') || is_any_of(c, "_$");}
 int is_id_first(UChar c){return 
-	(c>='a' && c<='z') || (c>='A' && c<='Z') || (strchr("_$", c) != NULL);}
-int is_symbol(UChar c){return strchr("+-*/&^<>~|=?!.%#", c) != NULL;}
-int is_esc(UChar c){return strchr("abfnrtv0\\\"\'", c) != NULL;}
+	(c>='a' && c<='z') || (c>='A' && c<='Z') || is_any_of(c, "_$");}
+int is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
+int is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
+int is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
 //</helpers>
 
 //<all fns [StepFn+helperes+combiners]>
@@ -29,7 +31,7 @@ void sf_flush_reset(State s){
 }
 
 ///fall through
-void sf_flush_fnp(State s)  {
+void sf_flush_recur(State s)  {
 	///MUST NOT BE CALLED FROM stt_NONE branch! [infinite loop]
 	puts("RECUR");
 	sf_flush_reset(s); //is done, flushes; searches with NONE
@@ -43,7 +45,7 @@ FnPack with_flush_reset(StepFn sf){return (FnPack){sf, sf_flush_reset};}
 FnPack with_id(StepFn sf){return (FnPack){sf, sf_id};}
 
 FnPack fnp_reset = {sf_reset, sf_id};
-FnPack fnp_flush_recur = {sf_flush_fnp, sf_id};
+FnPack fnp_flush_recur = {sf_flush_recur, sf_id};
 //FnPack fnp_id = {sf_id, sf_id}; //already exists [in header]
 
 /// -- ACTUAL Fns ARE FROM NOW ON
@@ -75,37 +77,31 @@ void sf_str_flush_reset(State s){
 	sf_flush(s);
 	sf_str_reset(s);
 }
-void sf_str_flush_fnp(State s){ //no flush
+void sf_str_flush_recur(State s){ //no flush
 	///MUST NOT BE CALLED FROM stt_STR branch! [infinite loop]
-	///just like sf_flush_fnp[recur], but returns to STR
+	///just like sf_flush_recur[recur], but returns to STR
 	puts("RECUR STR");
 	sf_str_flush_reset(s); //is done, flushes; searches with STR
 	st_updateFnp(s); //recursive (not really, but in a sense)
 	st_Fn(s); 	//call now, for it would skip a char otherwise
 				//for this Fn is called instead
 }
-void sf_str_err_fnp(State s){ //no flush
+void sf_str_err_recur(State s){ //no flush
 	///just add error and recur normaly
 	puts("ESC ERR");
 	st_setTokenErr(s);
-	sf_str_flush_fnp(s);
+	sf_str_flush_recur(s);
 }
-FnPack fnp_str_err_recur = {sf_str_err_fnp, sf_id};
-FnPack fnp_str_flush_recur = {sf_str_flush_fnp, sf_id};
+FnPack fnp_str_err_recur = {sf_str_err_recur, sf_id};
+FnPack fnp_str_flush_recur = {sf_str_flush_recur, sf_id};
 ///STRD __ 
 void sf_strd_start(State s){//no flush 
 	st_setType(s, stt_STRD);
 	st_putcrtBuffToken(s, ptt_STRD);
 }
 void sf_strd_step(State s){st_tknputc(s);}//no flush
-void sf2_strd_step(State s){//instead of flush
-	puts("sf2_strd_step_0");
-	if (st_matchChar(s, "\"\\")) sf_flush(s); //on strd leave
-	puts("sf2_strd_step_1");
-}
-FnPack fnp_strd_step = {sf_strd_step, sf2_strd_step};
-FnPack fnp_strd_start = {sf_strd_start, sf2_strd_step};
-///STRESC __ improve! now works as str|\esc|\str ... sortof [requires \ after itself]
+
+///STRESC __ 
 void sf_stresc_start(State s){//no flush
 	st_setType(s, stt_STRESC);
 	st_crtBuffToken(s, ptt_STRESC); //empty, just data later
@@ -115,31 +111,9 @@ void sf_stresc_one(State s){//w flush, no reset
 	st_tknputc(s);
 }
 void sf_stresc_step(State s){st_tknputc(s);}//no flush
-void sf2_stresc_step(State s){//instead of flush
-	if (st_matchChar(s, "\"\\")) {
-		sf_flush(s);
-		st_setType(s, stt_STR);//??
-		if (st_cmpChar(s, '\\')) st_crtBuffToken(s, ptt_STRD);
-	} //on strd leave
-}
-FnPack fnp_stresc_step = {sf_stresc_step, sf2_stresc_step};
-
 void sf_just_minus(State s){st_setType(s, stt_MINUS);}//no flush
 
 ///NUM
-
-/*
- * parse idea:
- * optional -minus
- * NUM(0..9+)									NUMI
- * on '/' -> NUM_FRAC(0..9+) ->| 				NUMR
- * on '.' -> NUM_FLOAT(0..9+)	  ->|			NUMF
- * 				on 'D' -> NUM_DBL() ->|			NUMD
- * on 'B' -> NUM_BYTE() ->|						NUMB
- * on 'L' -> NUM_LONG() ->|						NUML
- * on 'U' -> NUM_UNS(L*)				->|		NUMUI
- * 				on 'L' -> NUM_UNSLONG()s	->|	NUMUL
- * */
 
 void sf_num_start(State s){//no flush
 	st_setType(s, stt_NUM);
@@ -176,7 +150,6 @@ void sf_numU(State s){//w id
 
 ///SYMBOL
 void sf_symbol_start(State s){//step_flush: if len=1
-	puts("sf_symbol_start");
 	st_setType(s, stt_SYMBOL);
 	st_putcrtBuffToken(s, ptt_SYMBOL);
 }
@@ -191,20 +164,27 @@ void sf_minus_symbol_only(State s){//no flush
 	puts("sf_minus_symbol_only");
 	st_crtBuffToken(s, ptt_SYMBOL);
 	st_tknaddc(s, '-');
-	sf_flush_fnp(s); //recur: actually apply curc, is not part of symbol
+	sf_flush_recur(s); //recur: actually apply curc, is not part of symbol
 }
 void sf_symbol_step(State s)  {st_tknputc(s);}//no flush
 
 ///ID  identifiers
 void sf_id_start(State s){//no flush
-	puts("sf_id_start");
 	st_setType(s, stt_ID);
 	st_putcrtBuffToken(s, ptt_ID);
 }
 void sf_id_step(State s)  {st_tknputc(s);}//no flush
 
 ///OPEN [opener characteres like : # ...]
-void sf_open(State s){st_putcrtBuffToken(s, ptt_OPEN);} //with flush
+void sf_open(State s){//w id, then flush recur
+	st_setType(s, stt_OPEN);
+	st_putcrtBuffToken(s, ptt_OPEN);
+} 
+//could become symbol... [whitespace etc. after it]
+void sf_open_symbol(State s){//instead of flush recur of [sf_open]
+	st_setTokenType(s, ptt_SYMBOL);
+	sf_flush_recur(s); //call flush recur
+} 
 
 ///FUNCTION "\", "\\"
 void sf_fnl(State s) {
@@ -270,7 +250,10 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 		case stt_FN: return c=='\\'
 				? with_flush_reset(sf_fnn)
 				: fnp_flush_recur; break;
-		
+				
+		case stt_OPEN: return is_openable(c)
+				? fnp_flush_recur
+				: with_id(sf_open_symbol);
 		case stt_MINUS: return minus_find(tt, c);
 		case stt_ID: return is_id(c) 
 				? with_id(sf_id_step)
@@ -320,7 +303,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 			case '@':
 			case '_':
 			case '`': ///ALL OPENS HERE
-			case '#': return with_flush_reset(sf_open);
+			case '#': return with_id(sf_open);
 			case ' ':
 			case ',':
 			case '\t':
@@ -329,7 +312,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 		} break;
 		
 		
-		default: return fnp_id; //something weird; for now not important
+		default: return fnp_flush_recur; //error, try to repair...
 	}
 }
 

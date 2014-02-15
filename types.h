@@ -11,7 +11,7 @@
 //<Cascade token types>
 typedef enum eStreamTokenType{ //must have possible length
 	stt_NONE, stt_STR, stt_STRD, stt_STRESC,
-	stt_MINUS, stt_ID, stt_SYMBOL, 
+	stt_MINUS, stt_ID, stt_SYMBOL, stt_OPEN,
 	stt_NUM, stt_NUMF, stt_NUMD, stt_NUMR, stt_NUMU,
 	stt_FN,
 	stt_CMNT

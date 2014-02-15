@@ -12,6 +12,20 @@
  * all fns
  * 
  * */
+ 
+/* NUM:
+ * 
+ * parse idea:
+ * optional -minus
+ * NUM(0..9+)									NUMI
+ * on '/' -> NUM_FRAC(0..9+) ->| 				NUMR
+ * on '.' -> NUM_FLOAT(0..9+)	  ->|			NUMF
+ * 				on 'D' -> NUM_DBL() ->|			NUMD
+ * on 'B' -> NUM_BYTE() ->|						NUMB
+ * on 'L' -> NUM_LONG() ->|						NUML
+ * on 'U' -> NUM_UNS(L*)				->|		NUMUI
+ * 				on 'L' -> NUM_UNSLONG()s	->|	NUMUL
+ * */
 
 
 FnPack fnp_find(Stt tt, UChar c); //main search point (to be used from outside)

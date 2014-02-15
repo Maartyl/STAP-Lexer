@@ -22,7 +22,7 @@ void st_Fn(State s)  {(*s->fp.fn)(s);}
 void st_Fn2(State s)  {(*s->fp.fn2)(s);}
 void st_setFnp(State s, FnPack fp)  {s->fp = fp;}
 void st_updateFnp(State s)  {st_setFnp(s, fnp_find(s->tt, s->curc));}
-void st_flushToken(State s)  {print_token(s->fout, s->t, s->flux);}
+void st_flushToken(State s)  {print_token(s->fout, s->t, s->flux); s->t.payload=NULL;}
 void st_setType(State s, Stt type)  {s->tt = type;}
 void st_setPayload(State s, Buffer bf)  {s->t.payload=bf;}
 void st_setToken(State s, Token tkn)  {s->t=tkn;}
