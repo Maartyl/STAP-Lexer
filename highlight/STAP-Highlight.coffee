@@ -32,7 +32,7 @@ to_tag = (type, content) ->
 	"<span class='ptt#{type}'>#{content}</span> "
 
 codify = (code) -> 
-	
+
 	"<style type='text/css'>#{style}</style>
 	<code><pre>#{code}</pre></code>"
 
@@ -79,7 +79,6 @@ lexer.stdout.on 'data', (data) ->
 	buff += data
 lexer.on 'close', ->
 	out = merge2 parse(buff), source
-	console.log out
 	save codify out
 
 

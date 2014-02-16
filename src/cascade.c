@@ -230,7 +230,7 @@ static void sf_fnl(State s) {
 }
 static void inline sf_fnn(State s) {st_setTokenType(s, ptt_FNN);}
 
-///COMMENT [ ; ]
+///COMMENT [ ; ... \n ]
 static void sf_cmnt_start(State s){//w id, uses universal end
 	st_setType(s, stt_CMNT);
 	st_crtToken(s, ptt_CMNT);
@@ -368,7 +368,7 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 				: fnp_find(stt_NONE, c);
 		case stt_SHEBANG: return c=='!'
 				? with_id(sf_shebang_cmnt)
-				: fnp_flush_recur;  //slush #[open] and retry for !
+				: fnp_flush_recur;  //flush #[Open] and retry for !
 		
 		
 		default: return fnp_flush_recur; //error, try to fix... //shouldn't ever happen

@@ -58,7 +58,7 @@ void lex(State s){
 		st_updateFnp(s);
 		st_Fn(s);
 	}
-	//TODO solve shebang #! ... //as Stt
+	
 	while (st_nextChar(s) != EOF) {	//__ main loop __
 		st_Fn2(s); 
 		st_updateFnp(s);

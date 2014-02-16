@@ -16,6 +16,7 @@
 *.exe
 *.out
 *.app
+bin/*
 
 # temp like, my
 *.gch
