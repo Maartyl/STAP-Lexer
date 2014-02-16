@@ -4,18 +4,10 @@ file = process.argv[2] ? 'data.stap'#'STAP-Highlight.coffee'
 
 fs = require 'fs'
 
-style = """
-span {font-size: 40;}
-.ptt15, .ptt10, .ptt11 {color: orange;}
-.ptt16 {color: #802090;}
-.ptt201, .ptt202, .ptt205, .ptt206, .ptt207,
- .ptt211, .ptt212, .ptt221{color: blue;}
-.ptt400 {color: gray;}
-.ptt51, .ptt52 {color: darkblue;}
-.ptt6 {color: green;}
-.ptt2 {color: #0088AA}
-.ptt1 {color: darkred;}
-"""
+style = ""
+fs.readFile 'ptt.css', 'utf-8', (err, data) ->
+	console.log(err) if err
+	style = data
 
 
 save = (data) ->
@@ -37,13 +29,15 @@ parse = (str) ->
 
 to_tag = (type, content) ->
 	if type == -1 then "" else
-	"<span class='ptt#{type}'>#{content}</span>   "
+	"<span class='ptt#{type}'>#{content}</span> "
 
 taggify = (arr) ->
 	arr.map (val) ->
 		to_tag val.type, source.substr(val.pos, val.len)
 
-codify = (code) -> "<style type='text/css'>#{style}</style><code>#{code}</code>"
+codify = (code) -> 
+	"<style type='text/css'>#{style}</style>
+	<code><pre>#{code}</pre></code>"
 
 merge = (arr, src) ->
 	source = src
@@ -72,6 +66,8 @@ merge2 = (arr, src) ->
 		last = pos+len-1
 
 	newarr.join ''
+
+#----------
 
 lexer =
 	(require 'child_process')
