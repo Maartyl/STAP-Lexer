@@ -1,4 +1,4 @@
-#!/usr/local/bin/stap; shenabg doesn't work yet
+#!/usr/local/bin/stap
 id;
 id45;
 1.5 1. 45.123456789;

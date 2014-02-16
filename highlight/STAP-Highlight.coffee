@@ -31,27 +31,24 @@ to_tag = (type, content) ->
 	if type == -1 then "" else
 	"<span class='ptt#{type}'>#{content}</span> "
 
-taggify = (arr) ->
-	arr.map (val) ->
-		to_tag val.type, source.substr(val.pos, val.len)
-
 codify = (code) -> 
+	
 	"<style type='text/css'>#{style}</style>
 	<code><pre>#{code}</pre></code>"
 
-merge = (arr, src) ->
-	source = src
-	offs = 0 #offset
-	arr.forEach (tkn) ->
-		pos = tkn.pos + offs
-		len = tkn.len
-		orig = source.substr(pos, len)
-		tag = to_tag tkn.type, orig
-		source = (source.substr 0, pos) + tag +
-				 (source.substr(pos + len))
-		offs += (tag.length - orig.length)
-		console.log "tag #{tag.length} - orig #{orig.length}: #{tag.length - orig.length}"
-	source
+# merge = (arr, src) ->
+# 	source = src
+# 	offs = 0 #offset
+# 	arr.forEach (tkn) ->
+# 		pos = tkn.pos + offs
+# 		len = tkn.len
+# 		orig = source.substr(pos, len)
+# 		tag = to_tag tkn.type, orig
+# 		source = (source.substr 0, pos) + tag +
+# 				 (source.substr(pos + len))
+# 		offs += (tag.length - orig.length)
+# 		console.log "tag #{tag.length} - orig #{orig.length}: #{tag.length - orig.length}"
+# 	source
 
 merge2 = (arr, src) ->
 	source = src
