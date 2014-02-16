@@ -17,10 +17,10 @@ id45;
 + *-+ 5;
 :\a (5 ++) b ":c" f_lol {a 1 b 2 b a b};cryptographic transformation
 \\fname arg1 arg2 { ... };
-;
+
 ;maxSimpleTriangleMatrixSize
- \\f n::Int acc::Int {n++ acc n + _\, n--, acc 0 < ?}   ;assumes overflow
- \\f n::Int acc::Int {n++ acc `+ n _\, n--, acc `< 0 ?} ;test with swap macro
+\\f n::Int acc::Int {n++ acc n + _\, n--, acc 0 < ?}   ;assumes overflow
+\\f n::Int acc::Int {n++ acc `+ n _\, n--, acc `< 0 ?} ;test with swap macro
 
 
 

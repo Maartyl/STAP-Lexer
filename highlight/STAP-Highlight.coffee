@@ -20,15 +20,14 @@ parse = (str) ->
 		splited = val.split '|', 2 #split max once
 		a = splited[0].split ','   #pos, len, row, col, type
 		type: a[4]
-		pos: a[0]
-		len: a[1]
-		row: a[2]
-		col: a[3]
+		pos: Number a[0]
+		len: Number a[1]
+		row: Number a[2]
+		col: Number a[3]
 		data: splited[1]
 
 to_tag = (type, content) ->
-	if type == -1 then "" else
-	"<span class='ptt#{type}'>#{content}</span> "
+	"<span class='ptt#{type}'>#{content}</span>"
 
 codify = (code, style) -> 
 	"<style type='text/css'>#{style}</style>
@@ -38,11 +37,14 @@ merge = (arr, src) ->
 	newarr = []   #arr to append to
 	last = 0
 	arr.forEach (tkn) ->
-		#if (last < pos)  ###whitespace etc. not solved...
-		#newarr.push(to_tag 0, (src.substring last, pos)) 
+		#diff = 
+		if (last < tkn.pos)  #whitespace etc. not solved...
+			newarr.push(src.substr last, tkn.pos-last) 
 		newarr.push(to_tag tkn.type, (src.substr tkn.pos, tkn.len))
-		last = tkn.pos+tkn.len-1
-	newarr.join ''
+		last = tkn.pos+tkn.len
+	console.log newarr
+	newarr.join('')
+	.replace "\n", '<br>'
 
 #----------
 
