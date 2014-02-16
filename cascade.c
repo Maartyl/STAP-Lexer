@@ -236,6 +236,23 @@ static void sf_cmnt_start(State s){//w id, uses universal end
 	st_crtToken(s, ptt_CMNT);
 }
 
+///SHEBANG - starts if first char is #, if second is ! turns into CMNT
+static void sf_shebang(State s){//w id
+	st_setType(s, stt_SHEBANG);
+	st_crtToken(s, ptt_OPEN);
+}
+static void sf2_shebang(State s){//w id
+	if (!st_cmpChar(s, '!')) {
+		st_setPayload(s, strbuff_open());
+		st_tknaddc(s, '#');
+	}
+}
+FnPack fnp_shebang = {sf_shebang, sf2_shebang};
+static void sf_shebang_cmnt(State s){//w id
+	st_setType(s, stt_CMNT);
+	st_setTokenType(s, ptt_CMNT);
+}
+
 
 
 
@@ -345,6 +362,13 @@ FnPack fnp_find(Stt tt, UChar c){			///main enetery
 			case '\n':return fnp_id; //just ignore, might be used in future...
 			default : return triforce_find(tt, c); //no need to check for Opens
 		} break;
+		
+		case stt_START: return c=='#'
+				? fnp_shebang
+				: fnp_find(stt_NONE, c);
+		case stt_SHEBANG: return c=='!'
+				? with_id(sf_shebang_cmnt)
+				: fnp_flush_recur;  //slush #[open] and retry for !
 		
 		
 		default: return fnp_flush_recur; //error, try to fix... //shouldn't ever happen

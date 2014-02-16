@@ -35,6 +35,13 @@ void print_token(FILE* fout, Token t, Flux end_pos){
 	close_token(t, l);
 }
 
+void cancel_token(Token t){ //shouldn't be used....
+	void inline l(char* str, size_t len){ //just pass
+		DEBUG(puts("CANCEL TOKEN");)
+	}
+	close_token(t, l);
+}
+
 void lex_all(FILE* fin, FILE* fout) {
 	State s = State_new(fin, fout);
 	lex(s);

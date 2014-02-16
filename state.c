@@ -57,7 +57,7 @@ State State_new(FILE* fin, FILE* fout){
 	s->fin = fin;
 	s->fout = fout;
 	s->flux = (Flux){0, 1, 1}; //init: {pos, row, col}
-	st_setType(s, stt_NONE);
+	st_setType(s, stt_START);
 	st_setChar(s, -4);    //will never be used: invalid val
 	st_setFnp(s, fnp_id);
 	return s;

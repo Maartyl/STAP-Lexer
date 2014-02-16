@@ -21,6 +21,9 @@ void close_token(Token t, void (*f)(char*, size_t));
 
 void print_token(FILE* fout, Token t, Flux end_pos);
 
+///closes buffer without printing - frees
+void cancel_token(Token t);
+
 void lex_all(FILE* fin, FILE* fout); //adds EOF
 
 ///main loop

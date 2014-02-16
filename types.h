@@ -15,7 +15,7 @@ typedef enum eStreamTokenType{ //stream states
 	stt_NUM, stt_NUMF, stt_NUMD, stt_NUMR, stt_NUMU,
 	stt_NUMF1, stt_NUMR1, //these are just state, unsure of becoming F/R or not
 	stt_FN,
-	stt_CMNT
+	stt_CMNT, stt_SHEBANG, stt_START //start of source
 } Stt;
 
 typedef enum ePublicTokenType{ //any type to be used in tokens themselves
@@ -92,7 +92,7 @@ typedef struct sState { //not necessarily consistent!
 //<Consts>
 #define SEPAR 30 /*RS*/
 
-#define DEBUG(CMND) /*CMND*/ //comment to comment all debug...
+#define DEBUG(CMND) CMND //comment to comment all debug...
 //</Consts>
 
 #endif
