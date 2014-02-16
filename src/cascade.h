@@ -25,6 +25,10 @@
  * on 'L' -> NUM_LONG() ->|						NUML
  * on 'U' -> NUM_UNS(L*)				->|		NUMUI
  * 				on 'L' -> NUM_UNSLONG()s	->|	NUMUL
+ * 
+ * low priority:
+ * add hexa and binary numberes //... what type are they?
+ * 0xC81E, 0b10001011001
  * */
  
  /* STR:

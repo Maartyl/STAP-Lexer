@@ -46,21 +46,12 @@ merge = (arr, src) ->
 
 #----------
 
-lexer =
-	(require 'child_process')
-	.spawn './stap-lex'
-
 source = "" #original source file
-buff = ""	#is being read by chunks, could be problem in split
-
-#lexer events
-lexer.stdout.setEncoding 'utf-8'
-lexer.stdout.on 'data', (data) ->
-	buff += data
-lexer.on 'close', ->
-	out = merge parse(buff), source
-	withStyle (style) -> save codify out, style
-
+lexer = (require 'child_process')
+	.exec './stap-lex', (err, stdout, stderr) ->
+		return console.log(err) if err
+		out = merge parse(stdout), source
+		withStyle (style) -> save codify out, style
 
 fs.readFile file, 'utf-8', (err, data) ->
 	return console.log(err) if err
