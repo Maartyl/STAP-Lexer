@@ -34,6 +34,9 @@ Stt   st_getType(State s);
 int st_matchChar(State s, char *str); //curc in str ?
 int st_cmpChar(State s, char c); 	//curc == c ?
 
+///BUG FIX - NUMR, NUMF
+void st_specialized_NUMFR_stepBackFlux(State s);
+
 /**
  * @fin stream from which to read source code characters
  * @fout stram to which print tokens

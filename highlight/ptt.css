@@ -25,7 +25,7 @@
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 */
 	
-span {font-size: 30;}
+pre {font-size: 24;}
 .ptt15, .ptt10, .ptt11 {color: orange;}
 .ptt16 {color: #802090;}
 .ptt201, .ptt202, .ptt205, .ptt206, .ptt207,

@@ -147,11 +147,13 @@ static void sf2_numR(State s){ //first time
 	}	
 	else { //rollback, isn't Rational, but just Int with / after itself
 		DEBUG(puts(" ROLLBACK start");)
+		st_specialized_NUMFR_stepBackFlux(s);
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '/');
 		st_updateFnp(s);
 		st_Fn(s);
+		st_moveFlux(s);
 		st_setChar(s, c); //reapply curc and perform this Fn2, but updated, 
 		st_Fn2(s);        //returning to normal cycle ...
 		DEBUG(puts("ROLLBACK end");)
@@ -166,11 +168,13 @@ static void sf2_numF(State s){ //first time
 	}	
 	else { //rollback, isn't Float, but just Int with . after itself
 		DEBUG(puts(" ROLLBACK start");)
+		st_specialized_NUMFR_stepBackFlux(s);
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '.');
 		st_updateFnp(s);
 		st_Fn(s);
+		st_moveFlux(s);
 		st_setChar(s, c); //reapply curc and perform this Fn2, but updated, 
 		st_Fn2(s);        //returning to normal cycle ...
 		DEBUG(puts("ROLLBACK end");)

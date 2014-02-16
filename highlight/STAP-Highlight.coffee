@@ -50,7 +50,9 @@ source = "" #original source file
 lexer = (require 'child_process')
 	.exec './stap-lex', (err, stdout, stderr) ->
 		return console.log(err) if err
-		out = merge parse(stdout), source
+		prsd = parse(stdout)
+		console.log prsd
+		out = merge prsd, source
 		withStyle (style) -> save codify out, style
 
 fs.readFile file, 'utf-8', (err, data) ->

@@ -46,6 +46,12 @@ void st_putcrtBuffToken(State s, Ptt type){
 	st_tknputc(s);
 }
 
+void st_specialized_NUMFR_stepBackFlux(State s) {
+	///BUG FIX
+	//not ot be used at any other occasion
+	s->flux.pos--;
+	s->flux.col--;
+}
 
 int st_matchChar(State s, char *str)  {return NULL != strchr(str, s->curc);}
 int inline st_cmpChar(State s, char c)  {return c == s->curc;}

@@ -1,8 +1,8 @@
 #!/usr/local/bin/stap
 id;
 id45;
-1.5 1. 45.123456789;
-1/2 0/1 1/0 3/5/7 ;
+1.5 1. 1/ 0;
+1/2 3/5/7 ;
 1/2/3/4/5/6/7/8/9;  test rationals
 1.2.3.4.5.6.7.8.9;  test floats
 1L 1U 1UL 1.D;
@@ -17,6 +17,10 @@ id45;
 + *-+ 5;
 :\a (5 ++) b ":c" f_lol {a 1 b 2 b a b};cryptographic transformation
 \\fname arg1 arg2 { ... };
+;
+;maxSimpleTriangleMatrixSize
+ \\f n::Int acc::Int {n++ acc n + _\, n--, acc 0 < ?}   ;assumes overflow
+ \\f n::Int acc::Int {n++ acc `+ n _\, n--, acc `< 0 ?} ;test with swap macro
 
 
 

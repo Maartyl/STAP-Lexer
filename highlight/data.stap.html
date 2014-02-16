@@ -25,7 +25,7 @@
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 */
 	
-span {font-size: 30;}
+pre {font-size: 24;}
 .ptt15, .ptt10, .ptt11 {color: orange;}
 .ptt16 {color: #802090;}
 .ptt201, .ptt202, .ptt205, .ptt206, .ptt207,
@@ -41,11 +41,11 @@ span {font-size: 30;}
 </style>	<code><pre><span class='ptt400'>#!/usr/local/bin/stap
 </span> <span class='ptt1'>id</span> <span class='ptt400'>;
 </span> <span class='ptt1'>id45</span> <span class='ptt400'>;
-</span> <span class='ptt211'>1.5</span> <span class='ptt201'>1.</span> <span class='ptt2'></span> <span class='ptt211'>45.123456789</span> <span class='ptt400'>;
-</span> <span class='ptt221'>1/2</span> <span class='ptt221'>0/1</span> <span class='ptt221'>1/0</span> <span class='ptt221'>3/5</span> <span class='ptt2'>/</span> <span class='ptt201'>7</span> <span class='ptt400'>;
+</span> <span class='ptt211'>1.5</span> <span class='ptt201'>1</span> <span class='ptt2'>.</span> <span class='ptt201'>1</span> <span class='ptt2'>/</span> <span class='ptt201'>0</span> <span class='ptt400'>;
+</span> <span class='ptt221'>1/2</span> <span class='ptt221'>3/5</span> <span class='ptt2'>/</span> <span class='ptt201'>7</span> <span class='ptt400'>;
 </span> <span class='ptt221'>1/2</span> <span class='ptt2'>/</span> <span class='ptt221'>3/4</span> <span class='ptt2'>/</span> <span class='ptt221'>5/6</span> <span class='ptt2'>/</span> <span class='ptt221'>7/8</span> <span class='ptt2'>/</span> <span class='ptt201'>9</span> <span class='ptt400'>;  test rationals
 </span> <span class='ptt211'>1.2</span> <span class='ptt2'>.</span> <span class='ptt211'>3.4</span> <span class='ptt2'>.</span> <span class='ptt211'>5.6</span> <span class='ptt2'>.</span> <span class='ptt211'>7.8</span> <span class='ptt2'>.</span> <span class='ptt201'>9</span> <span class='ptt400'>;  test floats
-</span> <span class='ptt202'>1L</span> <span class='ptt206'>1U</span> <span class='ptt207'>1UL</span> <span class='ptt201'>1.</span> <span class='ptt2'></span> <span class='ptt1'>D</span> <span class='ptt400'>;
+</span> <span class='ptt202'>1L</span> <span class='ptt206'>1U</span> <span class='ptt207'>1UL</span> <span class='ptt201'>1</span> <span class='ptt2'>.</span> <span class='ptt1'>D</span> <span class='ptt400'>;
 </span> <span class='ptt10'>"</span> <span class='ptt15'>str</span> <span class='ptt11'>"</span> <span class='ptt400'>;
 </span> <span class='ptt6'>#</span> <span class='ptt111'>(</span> <span class='ptt1'>lol</span> <span class='ptt112'>)</span> <span class='ptt1'>asd</span> <span class='ptt400'>;
 </span> <span class='ptt6'>:</span> <span class='ptt121'>[</span> <span class='ptt131'>{</span> <span class='ptt1'>i</span> <span class='ptt111'>(</span> <span class='ptt201'>1</span> <span class='ptt201'>2</span> <span class='ptt112'>)</span> <span class='ptt201'>5</span> <span class='ptt132'>}</span> <span class='ptt2'>..</span> <span class='ptt122'>]</span> <span class='ptt400'>;
@@ -57,4 +57,8 @@ span {font-size: 30;}
 </span> <span class='ptt2'>+</span> <span class='ptt2'>*-+</span> <span class='ptt201'>5</span> <span class='ptt400'>;
 </span> <span class='ptt6'>:</span> <span class='ptt51'>\</span> <span class='ptt1'>a</span> <span class='ptt111'>(</span> <span class='ptt201'>5</span> <span class='ptt2'>++</span> <span class='ptt112'>)</span> <span class='ptt1'>b</span> <span class='ptt10'>"</span> <span class='ptt15'>:c</span> <span class='ptt11'>"</span> <span class='ptt1'>f_lol</span> <span class='ptt131'>{</span> <span class='ptt1'>a</span> <span class='ptt201'>1</span> <span class='ptt1'>b</span> <span class='ptt201'>2</span> <span class='ptt1'>b</span> <span class='ptt1'>a</span> <span class='ptt1'>b</span> <span class='ptt132'>}</span> <span class='ptt400'>;cryptographic transformation
 </span> <span class='ptt52'>\\</span> <span class='ptt1'>fname</span> <span class='ptt1'>arg1</span> <span class='ptt1'>arg2</span> <span class='ptt131'>{</span> <span class='ptt2'>...</span> <span class='ptt132'>}</span> <span class='ptt400'>;
+</span> <span class='ptt400'>;
+</span> <span class='ptt400'>;maxSimpleTriangleMatrixSize
+</span> <span class='ptt52'>\\</span> <span class='ptt1'>f</span> <span class='ptt1'>n</span> <span class='ptt6'>:</span> <span class='ptt6'>:</span> <span class='ptt1'>Int</span> <span class='ptt1'>acc</span> <span class='ptt6'>:</span> <span class='ptt6'>:</span> <span class='ptt1'>Int</span> <span class='ptt131'>{</span> <span class='ptt1'>n</span> <span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt1'>n</span> <span class='ptt2'>+</span> <span class='ptt6'>_</span> <span class='ptt51'>\</span> <span class='ptt1'>n</span> <span class='ptt2'>-</span> <span class='ptt1'>acc</span> <span class='ptt201'>0</span> <span class='ptt2'><</span> <span class='ptt2'>?</span> <span class='ptt132'>}</span> <span class='ptt400'>;assumes overflow
+</span> <span class='ptt52'>\\</span> <span class='ptt1'>f</span> <span class='ptt1'>n</span> <span class='ptt6'>:</span> <span class='ptt6'>:</span> <span class='ptt1'>Int</span> <span class='ptt1'>acc</span> <span class='ptt6'>:</span> <span class='ptt6'>:</span> <span class='ptt1'>Int</span> <span class='ptt131'>{</span> <span class='ptt1'>n</span> <span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt6'>`</span> <span class='ptt2'>+</span> <span class='ptt1'>n</span> <span class='ptt6'>_</span> <span class='ptt51'>\</span> <span class='ptt1'>n</span> <span class='ptt2'>-</span> <span class='ptt1'>acc</span> <span class='ptt6'>`</span> <span class='ptt2'><</span> <span class='ptt201'>0</span> <span class='ptt2'>?</span> <span class='ptt132'>}</span> <span class='ptt400'>;test with swap macro
 </span> <span class='ptt-1'></span> </pre></code>
