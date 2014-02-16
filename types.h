@@ -13,6 +13,7 @@ typedef enum eStreamTokenType{ //stream states
 	stt_NONE, stt_STR, stt_STRD, stt_STRESC,
 	stt_MINUS, stt_ID, stt_SYMBOL, stt_OPEN,
 	stt_NUM, stt_NUMF, stt_NUMD, stt_NUMR, stt_NUMU,
+	stt_NUMF1, stt_NUMR1, //these are just state, unsure of becoming F/R or not
 	stt_FN,
 	stt_CMNT
 } Stt;

@@ -25,7 +25,7 @@
 	,ptt_EOF = -1
 	,ptt_ERR = 4096 */
 	
-span {font-size: 20;}
+span {font-size: 30;}
 .ptt15, .ptt10, .ptt11 {color: orange;}
 .ptt16 {color: #802090;}
 .ptt201, .ptt202, .ptt205, .ptt206, .ptt207,
@@ -34,7 +34,7 @@ span {font-size: 20;}
 .ptt51, .ptt52, .ptt131, .ptt132 {color: darkblue;}
 .ptt6 {color: #009000;}
 .ptt2 {color: #0088AA}
-.ptt1 {color: darkred;}
-.ptt121, .ptt122 {color: #00B040;}
-.ptt4112 {color: #FF2020;}
+.ptt1 {color: #500000;}
+.ptt121, .ptt122 {color: #00B060;}
+.ptt4112 {color: #FF2020; text-decoration: underline;}
 

@@ -1,4 +1,4 @@
-#!/usr/local/bin/stap; doesn't work yet
+#!/usr/local/bin/stap; shenabg doesn't work yet
 id;
 id45;
 1.5 1. 45.123456789;
@@ -10,9 +10,9 @@ id45;
 #(lol) asd;
 :[{i(1,2),5}..];
 :[ a b f #(1 2 a 3) collect * rand %.. expand];
-"str\ning"; error here 
+"str\ning"; 
 ("i"+"");
-"es\c\ape";
+"es\c\ape"; error here
 "es\\ca";
 + *-+ 5;
 :\a (5 ++) b ":c" f_lol {a 1 b 2 b a b};cryptographic transformation
