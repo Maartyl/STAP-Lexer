@@ -1,24 +1,23 @@
 #!/usr/bin/env coffee
 
-file = process.argv[2] ? 'data.stap'#'STAP-Highlight.coffee'
+file = process.argv[2] ? 'data.stap' #'STAP-Highlight.coffee'
 
 fs = require 'fs'
-
-style = ""
-fs.readFile 'ptt.css', 'utf-8', (err, data) ->
-	console.log(err) if err
-	style = data
-
 
 save = (data) ->
 	fs.writeFile file+'.html', data, (err) ->
 		console.log(err) if err
 
+withStyle = (f) -> 
+	fs.readFile 'ptt.css', 'utf-8', (err, data) ->
+		return console.log(err) if err
+		f data
+
 parse = (str) ->
-	arr = str.split '\x1E'
-	arr = arr.filter (part) -> part != '\n' #hard way to remove last elem
-	arr.map (val) -> 
-		splited = val.split '|', 2
+	(str.split '\x1E')
+	.filter( (part) -> part != '\n') #hard way to remove last elem
+	.map (val) -> 
+		splited = val.split '|', 2 #split max once
 		a = splited[0].split ','   #pos, len, row, col, type
 		type: a[4]
 		pos: a[0]
@@ -31,37 +30,18 @@ to_tag = (type, content) ->
 	if type == -1 then "" else
 	"<span class='ptt#{type}'>#{content}</span> "
 
-codify = (code) -> 
-
+codify = (code, style) -> 
 	"<style type='text/css'>#{style}</style>
 	<code><pre>#{code}</pre></code>"
 
-# merge = (arr, src) ->
-# 	source = src
-# 	offs = 0 #offset
-# 	arr.forEach (tkn) ->
-# 		pos = tkn.pos + offs
-# 		len = tkn.len
-# 		orig = source.substr(pos, len)
-# 		tag = to_tag tkn.type, orig
-# 		source = (source.substr 0, pos) + tag +
-# 				 (source.substr(pos + len))
-# 		offs += (tag.length - orig.length)
-# 		console.log "tag #{tag.length} - orig #{orig.length}: #{tag.length - orig.length}"
-# 	source
-
-merge2 = (arr, src) ->
-	source = src
+merge = (arr, src) ->
 	newarr = []   #arr to append to
 	last = 0
 	arr.forEach (tkn) ->
-		pos = tkn.pos
-		len = tkn.len
-		#if (last < pos)  
+		#if (last < pos)  ###whitespace etc. not solved...
 		#newarr.push(to_tag 0, (src.substring last, pos)) 
-		newarr.push(to_tag tkn.type, (src.substr pos, len))
-		last = pos+len-1
-
+		newarr.push(to_tag tkn.type, (src.substr tkn.pos, tkn.len))
+		last = tkn.pos+tkn.len-1
 	newarr.join ''
 
 #----------
@@ -78,11 +58,11 @@ lexer.stdout.setEncoding 'utf-8'
 lexer.stdout.on 'data', (data) ->
 	buff += data
 lexer.on 'close', ->
-	out = merge2 parse(buff), source
-	save codify out
+	out = merge parse(buff), source
+	withStyle (style) -> save codify out, style
 
 
 fs.readFile file, 'utf-8', (err, data) ->
-	console.log(err) if err
+	return console.log(err) if err
 	source = data
 	lexer.stdin.end data

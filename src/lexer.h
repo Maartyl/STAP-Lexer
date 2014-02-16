@@ -2,11 +2,12 @@
 #define LEXER_HEADER
 #include <stdio.h>
 #include <stdlib.h>
-#include "types.h"
 #include "str_buffer.h"
 #include "uchar.h"
-#include "state.h"
 #include "cascade.h"
+#include "types.h"
+#include "state.h"
+
  
 ///important parts to be changed maybe [format, line numbers...]
 ///+Token

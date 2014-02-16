@@ -22,6 +22,7 @@ void close_token(Token t, void (*f)(char*, size_t)){
 	char* str = t.payload == NULL ? "" : strbuff_close(t.payload, &payload_len);
 	(*f)(str, payload_len);
 	if (payload_len != 0) free(str); //0 for static ""
+	DEBUG(printf("tkn.closed(len: %lu)\n", payload_len);)
 }
 
 void print_token(FILE* fout, Token t, Flux end_pos){
