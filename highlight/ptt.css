@@ -1,0 +1,38 @@
+/*	 ptt_OP = 111
+	,ptt_CP = 112 
+	,ptt_OB = 121 
+	,ptt_CB = 122 
+	,ptt_OC = 131 
+	,ptt_CC = 132 
+	,ptt_STRO = 10 
+	,ptt_STRC = 11
+	,ptt_STRD = 15
+	,ptt_STRESC = 16
+	,ptt_NUMI = 201	
+	,ptt_NUML = 202
+	,ptt_NUMB = 205	 
+	,ptt_NUMUI = 206 
+	,ptt_NUMUL = 207
+	,ptt_NUMF = 211	 
+	,ptt_NUMD = 212
+	,ptt_NUMR = 221	 
+	,ptt_CMNT = 400	
+	,ptt_FNL = 51	
+	,ptt_FNN = 52	
+	,ptt_OPEN = 6   
+	,ptt_ID = 1     
+	,ptt_SYMBOL = 2 
+	,ptt_EOF = -1
+	,ptt_ERR = 4096 */
+	
+span {font-size: 40;}
+.ptt15, .ptt10, .ptt11 {color: orange;}
+.ptt16 {color: #802090;}
+.ptt201, .ptt202, .ptt205, .ptt206, .ptt207,
+ .ptt211, .ptt212, .ptt221{color: blue;}
+.ptt400 {color: gray;}
+.ptt51, .ptt52 {color: darkblue;}
+.ptt6 {color: green;}
+.ptt2 {color: #0088AA}
+.ptt1 {color: darkred;}
+

@@ -221,7 +221,7 @@ static FnPack minus_find(Stt tt, UChar c){ //-num, symbol
 FnPack fnp_find(Stt tt, UChar c){			///main enetery
 
 	DEBUG(char* str = uc_toStr(c);
-	printf("fnp_find(%d, %s)\n", tt, str[0] == '\n' ? "ENTER" : str); //DEBUG
+	printf("fnp_find(%d, %s)\n", tt, str[0] == '\n' ? "ENTER" : str); 
 	if (strlen(str)) free(str);)//DEBUG
 	
 	//breaks after returns not needed. [omitted on purpouse]
