@@ -9,7 +9,7 @@ static int is_id(UChar c){return
 	(c>='A' && c<='Z') || is_any_of(c, "_$");}
 static int is_id_first(UChar c){return 
 	(c>='a' && c<='z') || (c>='A' && c<='Z') || is_any_of(c, "_$");}
-static int inline is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#");}
+static int inline is_symbol(UChar c){return is_any_of(c, "+-*/&^<>~|=?!.%#@:");}
 static int inline is_esc(UChar c){return is_any_of(c, "abfnrtv0\\\"\'");}
 static int inline is_openable(UChar c){return !is_any_of(c, " \n\t,;");} //whitespace, CMNT atp.
 //</helpers>

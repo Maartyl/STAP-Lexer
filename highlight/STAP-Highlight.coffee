@@ -15,7 +15,7 @@ withStyle = (f) ->
 
 parse = (str) ->
 	(str.split '\x1E')
-	.filter( (part) -> part != '\n') #hard way to remove last elem
+	.filter( (part) -> part != '') #hard way to remove last elem
 	.map (val) -> 
 		splited = val.split '|', 2 #split max once
 		a = splited[0].split ','   #pos, len, row, col, type
@@ -45,16 +45,42 @@ merge = (arr, src) ->
 
 #----------
 
-source = "" #original source file
-lexer = (require 'child_process')
-	.exec './stap-lex', (err, stdout, stderr) ->
+# source = "" #original source file
+# lexer = (require 'child_process')
+# 	.exec './stap-lex', (err, stdout, stderr) ->
+# 		return console.log(err) if err
+# 		prsd = parse(stdout)
+# 		console.log prsd
+# 		out = merge prsd, source
+# 		withStyle (style) -> save codify out, style
+
+# fs.readFile file, 'utf-8', (err, data) ->
+# 	return console.log(err) if err
+# 	source = data
+# 	lexer.stdin.end data
+
+#----------- server version
+
+http = require 'http'
+cp = require 'child_process'
+
+server = http.createServer (rqst, rsp) ->
+	console.log "rqst at " + (new Date).toLocaleTimeString
+
+	source = "" #original source file
+	rsp.writeHead 200, {"Content-Type": "text/html"}
+	lexer = cp.exec './stap-lex', (err, stdout, stderr) ->
 		return console.log(err) if err
 		prsd = parse(stdout)
-		console.log prsd
+		#console.log prsd
 		out = merge prsd, source
-		withStyle (style) -> save codify out, style
+		withStyle (style) -> rsp.end codify out, style
+	
+	fs.readFile file, 'utf-8', (err, data) ->
+		return console.log(err) if err
+		source = data
+		lexer.stdin.end data
+		
+server.listen 8000, '127.0.0.1'
+console.log "Server running at http://127.0.0.1:8000/"	 
 
-fs.readFile file, 'utf-8', (err, data) ->
-	return console.log(err) if err
-	source = data
-	lexer.stdin.end data
