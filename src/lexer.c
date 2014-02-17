@@ -55,7 +55,6 @@ void lex_all(FILE* fin, FILE* fout) {
 void lex(State s){
 	if (st_firstChar(s) == EOF) return; //maybe stupid: flux problem fix
 	if (!st_cmpChar(s, SEPAR)){
-		DEBUG(printf("loop \\ %c\n", st_getChar(s));) //debug
 		st_updateFnp(s);
 		st_Fn(s);
 	}

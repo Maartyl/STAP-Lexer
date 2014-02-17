@@ -120,9 +120,9 @@ static void sf_num_start(State s){//no flush
 }
 static void sf_minus_num_start(State s){//no flush
 	st_setType(s, stt_NUM);
-	st_stepBackFlux(s);
+	st_stepBackFlux(s); //move FLUX one back: starts late
 	st_crtBuffToken(s, ptt_NUMI);
-	st_moveFlux(s);
+	st_moveFlux(s); //move FLUX back
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
@@ -149,13 +149,13 @@ static void sf2_numR(State s){ //first time
 	}	
 	else { //rollback, isn't Rational, but just Int with / after itself
 		DEBUG(puts(" ROLLBACK start");)
-		st_stepBackFlux(s);
+		st_stepBackFlux(s); //move FLUX one back: starts late
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '/');
 		st_updateFnp(s);
 		st_Fn(s);
-		st_moveFlux(s);
+		st_moveFlux(s); //move FLUX back
 		st_setChar(s, c); //reapply curc and perform this Fn2, but updated, 
 		st_Fn2(s);        //returning to normal cycle ...
 		DEBUG(puts("ROLLBACK end");)
@@ -170,13 +170,13 @@ static void sf2_numF(State s){ //first time
 	}	
 	else { //rollback, isn't Float, but just Int with . after itself
 		DEBUG(puts(" ROLLBACK start");)
-		st_stepBackFlux(s);
+		st_stepBackFlux(s); //move FLUX one back: starts late
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '.');
 		st_updateFnp(s);
 		st_Fn(s);
-		st_moveFlux(s);
+		st_moveFlux(s);	//move FLUX back
 		st_setChar(s, c); //reapply curc and perform this Fn2, but updated, 
 		st_Fn2(s);        //returning to normal cycle ...
 		DEBUG(puts("ROLLBACK end");)

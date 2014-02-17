@@ -22,7 +22,6 @@ int main (int argc, char *argv[]) {
 	
 	lex_all(fin, fout);
 
-	fprintf(fout, "\n");
 	fclose(fout); //flush stream
 	fclose(fin); //pointless, but if it is a file...
 	return 0;
