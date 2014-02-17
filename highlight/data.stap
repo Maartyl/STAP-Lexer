@@ -21,6 +21,7 @@ id45;
 ;maxSimpleTriangleMatrixSize
 \\f n::Int acc::Int {n++ acc n + _\, n--, acc 0 < ?}   ;assumes overflow
 \\f n::Int acc::Int {n++ acc `+ n _\, n--, acc `< 0 ?} ;test with swap macro
+ -| -- -5 -8U -""
 
 
 

@@ -46,9 +46,8 @@ void st_putcrtBuffToken(State s, Ptt type){
 	st_tknputc(s);
 }
 
-void st_specialized_NUMFR_stepBackFlux(State s) {
-	///BUG FIX
-	//not ot be used at any other occasion
+void st_stepBackFlux(State s) {//not nice to use, if there is a better way, use that
+	///BUG FIX, only works if not after enter (though at such time it would be useless)
 	s->flux.pos--;
 	s->flux.col--;
 }

@@ -19,7 +19,7 @@ parse = (str) ->
 	.map (val) -> 
 		splited = val.split '|', 2 #split max once
 		a = splited[0].split ','   #pos, len, row, col, type
-		type: a[4]
+		type: Number a[4]
 		pos: Number a[0]
 		len: Number a[1]
 		row: Number a[2]
@@ -37,14 +37,11 @@ merge = (arr, src) ->
 	newarr = []   #arr to append to
 	last = 0
 	arr.forEach (tkn) ->
-		#diff = 
-		if (last < tkn.pos)  #whitespace etc. not solved...
-			newarr.push(src.substr last, tkn.pos-last) 
+		if (last < tkn.pos)  #whitespace etc. solved...
+			newarr.push src.substr last, tkn.pos-last
 		newarr.push(to_tag tkn.type, (src.substr tkn.pos, tkn.len))
 		last = tkn.pos+tkn.len
-	console.log newarr
 	newarr.join('')
-	.replace "\n", '<br>'
 
 #----------
 

@@ -120,7 +120,9 @@ static void sf_num_start(State s){//no flush
 }
 static void sf_minus_num_start(State s){//no flush
 	st_setType(s, stt_NUM);
+	st_stepBackFlux(s);
 	st_crtBuffToken(s, ptt_NUMI);
+	st_moveFlux(s);
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
@@ -147,7 +149,7 @@ static void sf2_numR(State s){ //first time
 	}	
 	else { //rollback, isn't Rational, but just Int with / after itself
 		DEBUG(puts(" ROLLBACK start");)
-		st_specialized_NUMFR_stepBackFlux(s);
+		st_stepBackFlux(s);
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '/');
@@ -168,7 +170,7 @@ static void sf2_numF(State s){ //first time
 	}	
 	else { //rollback, isn't Float, but just Int with . after itself
 		DEBUG(puts(" ROLLBACK start");)
-		st_specialized_NUMFR_stepBackFlux(s);
+		st_stepBackFlux(s);
 		sf_flush_reset(s);
 		UChar c = st_getChar(s); //postpone curc, for last wasn't performed - simulate
 		st_setChar(s, '.');
@@ -197,13 +199,17 @@ static void sf_symbol_start(State s){//step_flush: if len=1
 static void sf_minus_symbol_start(State s){//no flush
 	DEBUG(puts("sf_minus_symbol_start");)
 	st_setType(s, stt_SYMBOL);
+	st_stepBackFlux(s);
 	st_crtBuffToken(s, ptt_SYMBOL);
+	st_moveFlux(s);
 	st_tknaddc(s, '-');
 	st_tknputc(s);
 }
 static void sf_minus_symbol_only(State s){//no flush
 	DEBUG(puts("sf_minus_symbol_only");)
+	st_stepBackFlux(s);
 	st_crtBuffToken(s, ptt_SYMBOL);
+	st_moveFlux(s);
 	st_tknaddc(s, '-');
 	sf_flush_recur(s); //recur: actually apply curc, is not part of symbol
 }

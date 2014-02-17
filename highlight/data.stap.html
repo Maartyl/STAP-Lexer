@@ -38,7 +38,8 @@ pre {font-size: 24;}
 .ptt121, .ptt122 {color: #00B060;}
 .ptt4112 {color: #FF2020; text-decoration: underline;}
 
-</style>	<code><pre><span class='ptt400'>#!/usr/local/bin/stap<br></span><span class='ptt1'>id</span><span class='ptt400'>;
+</style>	<code><pre><span class='ptt400'>#!/usr/local/bin/stap
+</span><span class='ptt1'>id</span><span class='ptt400'>;
 </span><span class='ptt1'>id45</span><span class='ptt400'>;
 </span><span class='ptt211'>1.5</span> <span class='ptt201'>1</span><span class='ptt2'>.</span> <span class='ptt201'>1</span><span class='ptt2'>/</span> <span class='ptt201'>0</span><span class='ptt400'>;
 </span><span class='ptt221'>1/2</span> <span class='ptt221'>3/5</span><span class='ptt2'>/</span><span class='ptt201'>7</span> <span class='ptt400'>;
@@ -58,9 +59,10 @@ pre {font-size: 24;}
 </span><span class='ptt52'>\\</span><span class='ptt1'>fname</span> <span class='ptt1'>arg1</span> <span class='ptt1'>arg2</span> <span class='ptt131'>{</span> <span class='ptt2'>...</span> <span class='ptt132'>}</span><span class='ptt400'>;
 </span>
 <span class='ptt400'>;maxSimpleTriangleMatrixSize
-</span> <span class='ptt52'>\\</span><span class='ptt1'>f</span> <span class='ptt1'>n</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt1'>acc</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt131'>{</span><span class='ptt1'>n</span><span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt1'>n</span> <span class='ptt2'>+</span> <span class='ptt6'>_</span><span class='ptt51'>\</span>, <span class='ptt1'>n</span>-<span class='ptt2'>-</span>, <span class='ptt1'>acc</span> <span class='ptt201'>0</span> <span class='ptt2'><</span> <span class='ptt2'>?</span><span class='ptt132'>}</span>   <span class='ptt400'>;assumes overflow
-</span> <span class='ptt52'>\\</span><span class='ptt1'>f</span> <span class='ptt1'>n</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt1'>acc</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt131'>{</span><span class='ptt1'>n</span><span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt6'>`</span><span class='ptt2'>+</span> <span class='ptt1'>n</span> <span class='ptt6'>_</span><span class='ptt51'>\</span>, <span class='ptt1'>n</span>-<span class='ptt2'>-</span>, <span class='ptt1'>acc</span> <span class='ptt6'>`</span><span class='ptt2'><</span> <span class='ptt201'>0</span> <span class='ptt2'>?</span><span class='ptt132'>}</span> <span class='ptt400'>;test with swap macro
-</span>
+</span><span class='ptt52'>\\</span><span class='ptt1'>f</span> <span class='ptt1'>n</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt1'>acc</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt131'>{</span><span class='ptt1'>n</span><span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt1'>n</span> <span class='ptt2'>+</span> <span class='ptt6'>_</span><span class='ptt51'>\</span>, <span class='ptt1'>n</span><span class='ptt2'>--</span>, <span class='ptt1'>acc</span> <span class='ptt201'>0</span> <span class='ptt2'><</span> <span class='ptt2'>?</span><span class='ptt132'>}</span>   <span class='ptt400'>;assumes overflow
+</span><span class='ptt52'>\\</span><span class='ptt1'>f</span> <span class='ptt1'>n</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt1'>acc</span><span class='ptt6'>:</span><span class='ptt6'>:</span><span class='ptt1'>Int</span> <span class='ptt131'>{</span><span class='ptt1'>n</span><span class='ptt2'>++</span> <span class='ptt1'>acc</span> <span class='ptt6'>`</span><span class='ptt2'>+</span> <span class='ptt1'>n</span> <span class='ptt6'>_</span><span class='ptt51'>\</span>, <span class='ptt1'>n</span><span class='ptt2'>--</span>, <span class='ptt1'>acc</span> <span class='ptt6'>`</span><span class='ptt2'><</span> <span class='ptt201'>0</span> <span class='ptt2'>?</span><span class='ptt132'>}</span> <span class='ptt400'>;test with swap macro
+</span> <span class='ptt2'>-|</span> <span class='ptt2'>--</span> <span class='ptt201'>-5</span> <span class='ptt206'>-8U</span> <span class='ptt2'>-</span><span class='ptt10'>"</span><span class='ptt11'>"</span>
+
 
 
 
