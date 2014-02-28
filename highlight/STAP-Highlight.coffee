@@ -7,6 +7,7 @@ fs = require 'fs'
 save = (data) ->
 	fs.writeFile file+'.html', data, (err) ->
 		console.log(err) if err
+	data
 
 withStyle = (f) -> 
 	fs.readFile 'ptt.css', 'utf-8', (err, data) ->
@@ -65,7 +66,7 @@ http = require 'http'
 cp = require 'child_process'
 
 server = http.createServer (rqst, rsp) ->
-	console.log "rqst at " + (new Date).toLocaleTimeString
+	console.log "rqst at " + (new Date).toLocaleTimeString()
 
 	source = "" #original source file
 	rsp.writeHead 200, {"Content-Type": "text/html"}
@@ -74,7 +75,7 @@ server = http.createServer (rqst, rsp) ->
 		prsd = parse(stdout)
 		#console.log prsd
 		out = merge prsd, source
-		withStyle (style) -> rsp.end codify out, style
+		withStyle (style) -> rsp.end save codify out, style
 	
 	fs.readFile file, 'utf-8', (err, data) ->
 		return console.log(err) if err

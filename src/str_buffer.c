@@ -12,12 +12,6 @@ void strbuff_add(Buffer b, int c){
 char *strbuff_close(Buffer b, /*out*/ size_t *size){
 	strbuff_add(b, 0); //null terminated memory segment
 	
-	//DEBUG
-	//int c;
-	//printf("closing buff: ");
-	//while ((c=getc(b->buff))!=EOF) putc(c, stdout); //'pipe'
-	//printf("\n");
-	
 	fclose(b->buff); //frees itself 
 	*size = b->size;
 	char *cr = b->str;

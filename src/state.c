@@ -68,7 +68,7 @@ State State_new(FILE* fin, FILE* fout){
 	return s;
 }
 
-void st_finalize(State s){
+void inline st_finalize(State s){
 	//if I ever need to free something inside or so...
 	free(s);
 }
