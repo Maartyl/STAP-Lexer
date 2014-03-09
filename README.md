@@ -7,4 +7,4 @@ Lexer of my conceptual language made for a school project:
  - Programování I - NPRG030 
  
 -----
-Find more in [Wiki](https://github.com/Maartyl/STAP-Lexer/wiki).
+Find more in [Documentation](https://github.com/Maartyl/STAP-Lexer/wiki).
